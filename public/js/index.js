@@ -5,6 +5,10 @@ app.config(function($routeProvider) {
         templateUrl : "static/html/home.html",
         controller: 'homeCtrl'
     })
+    .when("/:id", {
+        templateUrl : "static/html/project.html",
+        controller: 'projectCtrl'
+    })
     .otherwise({redirectTo : '/'})
 }).run(() => {
  
@@ -22,5 +26,10 @@ app.controller('homeCtrl', ['$scope', '$http', '$rootScope', function($scope, $h
             todayHighlight: true
         }).datepicker('update', new Date())
     })
+      
+}])
+
+app.controller('projectCtrl', ['$scope', '$http', '$rootScope', function($scope, $http, $rootScope) {
+    
       
 }])
