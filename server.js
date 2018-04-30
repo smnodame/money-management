@@ -86,6 +86,9 @@ app.post('/activities/:id', (req, res) => {
   const ref = db.ref("activities/"+ req.params.id)
   const activityRef = ref.child("activities")
   activityRef.push().set(req.body)
+  ref.update({
+    disburse: req.body.sum_price
+  })
   res.json(res.body)
 })
 

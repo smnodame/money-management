@@ -273,7 +273,7 @@ app.controller('projectCtrl', ['$scope', '$http', '$rootScope', '$routeParams', 
         $scope.budget = res.data.budget
         $scope.name = res.data.name
         $scope.sum_price = 0
-        
+
         if(res.data.activities) {
             const data = Object.keys(res.data.activities).map((key) => {
                 return {
@@ -293,7 +293,8 @@ app.controller('projectCtrl', ['$scope', '$http', '$rootScope', '$routeParams', 
             name: $scope.new_name,
             price: parseInt($scope.new_price),
             date: $scope.new_date,
-            condition: $scope.new_condition || '-'
+            condition: $scope.new_condition || '-',
+            sum_price: $scope.sum_price + parseInt($scope.new_price)
         })
         .then(function(res) {
             $route.reload()
