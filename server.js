@@ -108,16 +108,13 @@ app.delete('/staff/:id', (req, res) => {
   staffRef.remove()
   res.json(res.body)
 })
-// app.put('/books/:id', (req, res) => {
-//   const updateIndex = books.findIndex(book => book.id === req.params.id)
-//   res.json(Object.assign(books[updateIndex], req.body))
-// })
 
-// app.delete('/books/:id', (req, res) => {
-//   const deletedIndex = books.findIndex(book => book.id === req.params.id)
-//   books.splice(deletedIndex, 1)
-//   res.status(204).send()
-// })
+app.delete('/activities/:id/:key', (req, res) => {
+  const ref = db.ref("activities/"+req.params.id+"/activities")
+  const activityRef = ref.child(req.params.key)
+  activityRef.remove()
+  res.json(res.body)
+})
 
 app.listen(3000, () => {
   console.log('Start server at port 3000.')

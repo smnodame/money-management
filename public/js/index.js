@@ -272,16 +272,20 @@ app.controller('projectCtrl', ['$scope', '$http', '$rootScope', '$routeParams', 
     .then(function(res) {
         $scope.budget = res.data.budget
         $scope.name = res.data.name
+        $scope.sum_price = 0
         
-        const data = Object.keys(res.data.activities).map((key) => {
-            return {
-                ...res.data.activities[key],
-                key: key
-            }
-        })
-
-        $scope.sum_price = data.reduce(getSum, 0)
-        $scope.activities = data
+        if(res.data.activities) {
+            const data = Object.keys(res.data.activities).map((key) => {
+                return {
+                    ...res.data.activities[key],
+                    key: key
+                }
+            })
+    
+            $scope.sum_price = data.reduce(getSum, 0)
+            $scope.activities = data
+        }
+        
     })
 
     $scope.add_activity = () => {
@@ -298,5 +302,12 @@ app.controller('projectCtrl', ['$scope', '$http', '$rootScope', '$routeParams', 
 
     $scope.validation = () => {
         return $scope.new_name && $scope.new_price && $scope.new_date
+    }
+
+    $scope.del_activity = (key) => {
+        $http.delete('/activities/'+ $routeParams.id + '/' + key)
+        .then(function(res) {
+            $route.reload()
+        })
     }
 }])

@@ -43,6 +43,7 @@
                         <td scope="col">รายการ</td>
                         <td scope="col">จำนวนเงิน</td>
                         <td scope="col">หมายเหตุ</td>
+                        <td scope="col">action</td>
                     </tr>
                 </thead>
                 <tbody>
@@ -52,6 +53,7 @@
                         <td>{{ activity.name }}</td>
                         <td>{{ activity.price }}</td>
                         <td>{{ activity.condition }}</td>
+                        <td><button type="button" class="btn btn-warning" ng-click="del_activity(activity.key)" >ลบ</button></td>
                     </tr>
                 </tbody>
                 <tfoot>
@@ -60,6 +62,7 @@
                         <td></td>
                         <td></td>
                         <td>{{ sum_price }}</td>
+                        <td></td>
                         <td></td>
                     </tr>
                 <tfoot>
