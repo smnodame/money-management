@@ -86,6 +86,8 @@ app.controller('homeCtrl', ['$scope', '$http', '$rootScope', '$route', function(
         
         $http.delete('/activities/'+key).then(function(res) {
             $route.reload()
+            $('#staff').hide();
+            $('#myModal').hide()
         })
     }
 
@@ -99,6 +101,8 @@ app.controller('homeCtrl', ['$scope', '$http', '$rootScope', '$route', function(
         })
         .then(function(res) {
             $route.reload()
+            $('#staff').hide();
+            $('#myModal').hide()
         })
     }
 
@@ -109,20 +113,59 @@ app.controller('homeCtrl', ['$scope', '$http', '$rootScope', '$route', function(
     $scope.staff_type = 'บุคลากรหลัก'
     $scope.staff_position = 'หัวหน้าโครงการ'
     $scope.show_main = true
+    $scope.staff_salary = 30000
     $scope.type_change = () => {
         if($scope.staff_type == 'บุคลากรหลัก') {
             $scope.show_main = true
             $scope.show_support = false
             $scope.staff_position = 'หัวหน้าโครงการ'
+            $scope.staff_salary = 30000
         } else {
             $scope.show_main = false
             $scope.show_support = true
             $scope.staff_position = 'ผู้ช่วยนักวิจัย'
+            $scope.staff_salary = 20000
+        }
+    }
+
+    $scope.position_change = () => {
+        if($scope.staff_position == 'หัวหน้าโครงการ') {
+            $scope.staff_salary = 30000
+        } else if ($scope.staff_position == 'นักวิจัย') {
+            $scope.staff_salary = 25000
+        } else if ($scope.staff_position == 'ผู้ช่วยนักวิจัย') {
+            $scope.staff_salary = 20000
+        } else {
+            $scope.staff_salary = 15000
         }
     }
 
     $scope.can_add_staff = () => {
         return $scope.staff_position && $scope.staff_type && $scope.staff_name && $scope.staff_department && $scope.staff_salary && $scope.staff_skill
+    }
+
+    $scope.add_staff = () => {
+        $http.post('/staff', {
+            fullname: $scope.staff_name,
+            department: $scope.staff_department,
+            type: $scope.staff_type,
+            position: $scope.staff_position,
+            salary: parseInt($scope.staff_salary),
+            skill: $scope.staff_skill
+        })
+        .then(function(res) {
+            $(function () {
+                $('#staff').hide()
+                $('#myModal').hide()
+            })
+            $route.reload()
+        })
+    }
+
+    $scope.del_staff = (key) => {
+        $http.delete('/staff/'+key).then(() => {
+            $route.reload()
+        })
     }
 }])
 

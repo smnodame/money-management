@@ -65,6 +65,18 @@ app.post('/activities', (req, res) => {
   res.json(res.body)
 })
 
+app.post('/staff', (req, res) => {
+  const staffRef = db.ref("staff")
+  staffRef.push().set(req.body)
+  res.json(res.body)
+})
+
+app.delete('/staff/:id', (req, res) => {
+  const ref = db.ref("staff")
+  const staffRef = ref.child(req.params.id)
+  staffRef.remove()
+  res.json(res.body)
+})
 // app.put('/books/:id', (req, res) => {
 //   const updateIndex = books.findIndex(book => book.id === req.params.id)
 //   res.json(Object.assign(books[updateIndex], req.body))
