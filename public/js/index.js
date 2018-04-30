@@ -25,8 +25,10 @@ app.controller('homeCtrl', ['$scope', '$http', '$rootScope', function($scope, $h
             autoclose: true, 
             todayHighlight: true
         }).datepicker('update', new Date())
+
+        
     })
-      
+    $scope.budget_all = 1000000 
 }])
 
 app.controller('projectCtrl', ['$scope', '$http', '$rootScope', function($scope, $http, $rootScope) {
