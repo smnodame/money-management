@@ -24,37 +24,40 @@ admin.initializeApp({
 const auth = admin.auth()
 const db = admin.database()
 
-// const ref = db.ref("server/saving-data/fireblog")
-// const usersRef = ref.child("users")
-// usersRef.set({
-//   alanisawesome: {
-//     date_of_birth: "June 23, 1912",
-//     full_name: "Alan Turing"
-//   },
-//   gracehop: {
-//     date_of_birth: "December 9, 1906",
-//     full_name: "Grace Hopper"
-//   }
-// })
+
 
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html')
 })
 
-app.get('/books/:id', (req, res) => {
-  res.json(books.find(book => book.id === req.params.id))
+app.get('/activities', (req, res) => {
+  const ref = db.ref("activities")
+  ref.on("value", function(snapshot) {
+    res.json(snapshot.val())
+  }, function (errorObject) {
+    res.status(500).send()
+  });
+  
 })
 
-app.put('/books/:id', (req, res) => {
-  const updateIndex = books.findIndex(book => book.id === req.params.id)
-  res.json(Object.assign(books[updateIndex], req.body))
+app.post('/activities', (req, res) => {
+    const activityRef = db.ref("activities")
+    // const activityRef = ref.child("activities")
+    activityRef.push().set(req.body)
+    
+    // res.json(books.find(book => book.id === req.params.id))
 })
 
-app.delete('/books/:id', (req, res) => {
-  const deletedIndex = books.findIndex(book => book.id === req.params.id)
-  books.splice(deletedIndex, 1)
-  res.status(204).send()
-})
+// app.put('/books/:id', (req, res) => {
+//   const updateIndex = books.findIndex(book => book.id === req.params.id)
+//   res.json(Object.assign(books[updateIndex], req.body))
+// })
+
+// app.delete('/books/:id', (req, res) => {
+//   const deletedIndex = books.findIndex(book => book.id === req.params.id)
+//   books.splice(deletedIndex, 1)
+//   res.status(204).send()
+// })
 
 app.listen(3000, () => {
   console.log('Start server at port 3000.')

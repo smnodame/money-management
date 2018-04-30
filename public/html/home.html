@@ -46,37 +46,13 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>Mark</td>
-                        <td>กิจกรรมเดือน 1 - 2</td>
-                        <td>100000</td>
-                        <td>100000</td>
-                        <td>100</td>
-                        <td>
-                                <button type="button" class="btn btn-info">เเก้ไข</button>
-                                <button type="button" class="btn btn-warning">ลบ</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td>Jacob</td>
-                        <td>กิจกรรมเดือน 3 - 4</td>
-                        <td>100000</td>
-                        <td>100000</td>
-                        <td>100</td>
-                        <td>
-                                <button type="button" class="btn btn-info">เเก้ไข</button>
-                                <button type="button" class="btn btn-warning">ลบ</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">3</th>
-                        <td>Larry</td>
-                        <td>กิจกรรมเดือน 5 - 6</td>
-                        <td>100000</td>
-                        <td>100000</td>
-                        <td>100</td>
+                    <tr ng-repeat="activity in activities track by $index">
+                        <th scope="row">{{ $index + 1 }} </th>
+                        <td>{{ activity.name }}</td>
+                        <td>กิจกรรมเดือน {{ activity.start }} - {{ activity.end }}</td>
+                        <td>{{ activity.budget }}</td>
+                        <td>{{ activity.disburse }}</td>
+                        <td>{{ (activity.disburse * 100 ) / activity.budget  }}</td>
                         <td>
                                 <button type="button" class="btn btn-info">เเก้ไข</button>
                                 <button type="button" class="btn btn-warning">ลบ</button>
@@ -88,10 +64,10 @@
                     <tr>
                         <th scope="row">รวม</th>
                         <td></td>
-                        <td>6</td>
-                        <td>300000</td>
-                        <td>300000</td>
-                        <td>100</td>
+                        <td>{{ last_month }}</td>
+                        <td>{{ used_budget }}</td>
+                        <td>{{ used_disburse }}</td>
+                        <td>{{ percent }}</td>
                         <td>
                         </td>
                     </tr>
