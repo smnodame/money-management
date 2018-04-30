@@ -92,17 +92,30 @@ app.controller('homeCtrl', ['$scope', '$http', '$rootScope', '$route', function(
         })
     })
 
-    $scope.update_activity = (index) => {
+    $scope.open_adding_activity = () => {
+        $scope.activity_name = ""
+        $scope.activity_budget = ""
+        $scope.activity_start = ""
+        $scope.activity_end = ""
+        $scope.is_update_activity = false
+    }
+
+    $scope.open_update_activity_modal = (index) => {
         $scope.activity_name = $scope.activities[index].name
         $scope.activity_budget = $scope.activities[index].budget
         $scope.activity_start = $scope.activities[index].start
         $scope.activity_end = $scope.activities[index].end
+        $scope.activity_key = $scope.activities[index].key
 
-        $(document).ready(function(){
-        $('#myModal').show()
-        })
+        $scope.is_update_activity = true
     }
 
+    $scope.update_activity = () => {
+        $http.put('/activities/' + $scope.activity_key).then(function(res) {
+            $route.reload()
+        })
+    }
+    
     $scope.del_activity = (key) => {
         
         $http.delete('/activities/'+key).then(function(res) {

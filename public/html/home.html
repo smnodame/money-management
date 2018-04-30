@@ -28,7 +28,7 @@
             <div class="card-header">
                 <strong class="card-title">กิจกรรม</strong>
                     <div class="float-right">
-                        <button type="button" class="btn btn-info"  data-toggle="modal" data-target="#myModal">เพิ่ม</button>
+                        <button type="button" class="btn btn-info" ng-click="open_adding_activity()"  data-toggle="modal" data-target="#myModal">เพิ่ม</button>
                     </div>
             </div>
             <div class="card-body">
@@ -54,7 +54,7 @@
                         <td>{{ activity.disburse }}</td>
                         <td>{{ (activity.disburse * 100 ) / activity.budget  }}</td>
                         <td>
-                                <button type="button" class="btn btn-info" ng-click="update_activity($index)">เเก้ไข</button> 
+                                <button type="button" class="btn btn-info" ng-click="open_update_activity_modal($index)" data-toggle="modal" data-target="#myModal">เเก้ไข</button> 
                                 <button type="button" class="btn btn-warning" ng-click="del_activity(activity.key)">ลบ</button>
                         </td>
                     </tr>
@@ -183,7 +183,8 @@
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">เพิ่มโครงการ</h4>
+                <h4 ng-if="!is_update_activity" class="modal-title">เพิ่มกิจกรรม</h4>
+                <h4 ng-if="is_update_activity" class="modal-title">เเก้ไขกิจกรรม</h4>
             </div>
             <div class="modal-body">
                     <div class="col-md-12">
@@ -222,7 +223,8 @@
                         </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success" ng-disabled="!add_validation()" ng-click="add_activity()">เพิ่ม</button>
+                <button type="button" class="btn btn-success" ng-disabled="!add_validation()" data-dismiss="modal" ng-click="update_activity()" ng-if="is_update_activity">อัพเดท</button>
+                <button type="button" class="btn btn-success" ng-disabled="!add_validation()" data-dismiss="modal" ng-click="add_activity()" ng-if="!is_update_activity">เพิ่ม</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">ปิด</button>
             </div>
         </div>
@@ -289,7 +291,7 @@
                         </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-success" ng-disabled="!can_add_staff()" ng-click="add_staff()">เพิ่ม</button>
+                    <button type="button" class="btn btn-success" ng-disabled="!can_add_staff()" data-dismiss="modal" ng-click="add_staff()">เพิ่ม</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">ปิด</button>
                 </div>
             </div>
