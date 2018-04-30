@@ -111,7 +111,12 @@ app.controller('homeCtrl', ['$scope', '$http', '$rootScope', '$route', function(
     }
 
     $scope.update_activity = () => {
-        $http.put('/activities/' + $scope.activity_key).then(function(res) {
+        $http.put('/activities/' + $scope.activity_key , {
+            name: $scope.activity_name,
+            budget: parseInt($scope.activity_budget),
+            start: parseInt($scope.activity_start),
+            end: parseInt($scope.activity_end)
+        }).then(function(res) {
             $route.reload()
         })
     }

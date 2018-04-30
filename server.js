@@ -58,6 +58,13 @@ app.delete('/activities/:id', (req, res) => {
     // console.log(req.params.id)
 })
 
+app.put('/activities/:id', (req, res) => {
+  const ref = db.ref("activities")
+  const activityRef = ref.child(req.params.id)
+  activityRef.update(req.body)
+  res.json(res.body)
+})
+
 app.post('/activities', (req, res) => {
   const activityRef = db.ref("activities")
   // const activityRef = ref.child("activities")
