@@ -54,7 +54,7 @@
                         <td>{{ activity.disburse }}</td>
                         <td>{{ (activity.disburse * 100 ) / activity.budget  }}</td>
                         <td>
-                                <button type="button" class="btn btn-info">เเก้ไข</button>
+                                <button type="button" class="btn btn-info" ng-click="update_activity($index)">เเก้ไข</button> 
                                 <button type="button" class="btn btn-warning" ng-click="del_activity(activity.key)">ลบ</button>
                         </td>
                     </tr>
@@ -74,9 +74,6 @@
                 <tfoot>
                 </table>
             </div>
-            
-                
-
         </div>
     </div>
 

@@ -26,7 +26,6 @@ app.controller('homeCtrl', ['$scope', '$http', '$rootScope', '$route', function(
             todayHighlight: true
         }).datepicker('update', new Date())
 
-        
     })
     $scope.budget_all = 1000000
     
@@ -92,6 +91,17 @@ app.controller('homeCtrl', ['$scope', '$http', '$rootScope', '$route', function(
             $scope.all_salary = 0
         })
     })
+
+    $scope.update_activity = (index) => {
+        $scope.activity_name = $scope.activities[index].name
+        $scope.activity_budget = $scope.activities[index].budget
+        $scope.activity_start = $scope.activities[index].start
+        $scope.activity_end = $scope.activities[index].end
+
+        $(document).ready(function(){
+        $('#myModal').show()
+        })
+    }
 
     $scope.del_activity = (key) => {
         
