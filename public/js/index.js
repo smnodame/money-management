@@ -14,7 +14,7 @@ app.config(function($routeProvider) {
  
 })
 
-app.controller('homeCtrl', ['$scope', '$http', '$rootScope', function($scope, $http, $rootScope) {
+app.controller('homeCtrl', ['$scope', '$http', '$rootScope', '$route', function($scope, $http, $rootScope, $route) {
     $(function () {
         $("#datepicker-start").datepicker({ 
                 autoclose: true, 
@@ -33,7 +33,10 @@ app.controller('homeCtrl', ['$scope', '$http', '$rootScope', function($scope, $h
     $http.get('/activities')
     .then(function(res) {
         const data = Object.keys(res.data).map((key) => {
-            return res.data[key]
+            return {
+                ...res.data[key],
+                key: key
+            }
         })
         res.data = data
 
@@ -62,10 +65,13 @@ app.controller('homeCtrl', ['$scope', '$http', '$rootScope', function($scope, $h
     }).then(() => {
         $http.get('/staff').then((res) => {
             const data = Object.keys(res.data).map((key) => {
-                return res.data[key]
+                return {
+                    ...res.data[key],
+                    key: key
+                }
             })
             res.data = data
-            
+
             $scope.staffs = res.data
     
             function getSumSalary(total, ac) {
@@ -76,6 +82,13 @@ app.controller('homeCtrl', ['$scope', '$http', '$rootScope', function($scope, $h
         })
     })
 
+    $scope.del_activity = (key) => {
+        
+        $http.delete('/activities/'+key).then(function(res) {
+            $route.reload()
+        })
+    }
+
     $scope.add_activity = () => {
         $http.post('/activities', {
             name: $scope.activity_name,
@@ -85,7 +98,7 @@ app.controller('homeCtrl', ['$scope', '$http', '$rootScope', function($scope, $h
             disburse:  0
         })
         .then(function(res) {
-            location.reload()
+            $route.reload()
         })
     }
 

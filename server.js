@@ -50,12 +50,19 @@ app.get('/staff', (req, res) => {
   
 })
 
-app.post('/activities', (req, res) => {
-    const activityRef = db.ref("activities")
-    // const activityRef = ref.child("activities")
-    activityRef.push().set(req.body)
-    
+app.delete('/activities/:id', (req, res) => {
+    const ref = db.ref("activities")
+    const activityRef = ref.child(req.params.id)
+    activityRef.remove()
     res.json(res.body)
+    // console.log(req.params.id)
+})
+
+app.post('/activities', (req, res) => {
+  const activityRef = db.ref("activities")
+  // const activityRef = ref.child("activities")
+  activityRef.push().set(req.body)
+  res.json(res.body)
 })
 
 // app.put('/books/:id', (req, res) => {
