@@ -120,6 +120,10 @@ app.controller('homeCtrl', ['$scope', '$http', '$rootScope', '$route', function(
             $scope.staff_position = 'ผู้ช่วยนักวิจัย'
         }
     }
+
+    $scope.can_add_staff = () => {
+        return $scope.staff_position && $scope.staff_type && $scope.staff_name && $scope.staff_department && $scope.staff_salary && $scope.staff_skill
+    }
 }])
 
 app.controller('projectCtrl', ['$scope', '$http', '$rootScope', function($scope, $http, $rootScope) {

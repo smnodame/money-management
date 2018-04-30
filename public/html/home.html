@@ -246,8 +246,8 @@
                 <div class="modal-body">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label class="control-label mb-1" ng-model="staff_name">ชื่อ + นามสกุล</label>
-                                <input type="text" class="form-control" />
+                                <label class="control-label mb-1" >ชื่อ + นามสกุล</label>
+                                <input type="text" class="form-control" ng-model="staff_name" />
                             </div>
                         </div>
                         <div class="col-md-12">
@@ -279,6 +279,12 @@
                             </div>
                         </div>
                         <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="control-label mb-1">เงินเดือนประจำตำเเหน่ง</label>
+                                    <input type="number" class="form-control" ng-model="staff_salary" />
+                                </div>
+                            </div>
+                        <div class="col-md-12">
                             <div class="form-group">
                                 <label for="comment">ทักษะ</label>
                                 <textarea class="form-control" rows="3" ng-model="staff_skill"></textarea>
@@ -286,7 +292,7 @@
                         </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-success">เพิ่ม</button>
+                    <button type="button" class="btn btn-success" ng-disabled="!can_add_staff()">เพิ่ม</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">ปิด</button>
                 </div>
             </div>
