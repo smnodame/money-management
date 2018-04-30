@@ -253,5 +253,12 @@ app.controller('homeCtrl', ['$scope', '$http', '$rootScope', '$route', function(
 
 app.controller('projectCtrl', ['$scope', '$http', '$rootScope', function($scope, $http, $rootScope) {
     
-      
+    $(function () {
+        $("#datepicker").datepicker({ 
+                autoclose: true, 
+                todayHighlight: true
+        }).datepicker('update', new Date())
+
+
+    })
 }])
