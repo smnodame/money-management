@@ -54,6 +54,16 @@ app.controller('homeCtrl', ['$scope', '$http', '$rootScope', function($scope, $h
         $scope.percent = ( disburse_arr / budget_arr ) * 100
         $scope.last_month = Math.max(...end_arr)
     })
+
+    $http.get('/staff').then((res) => {
+        $scope.staffs = res.data
+
+        function getSumSalary(total, ac) {
+            return total + ac.salary
+        }
+
+        $scope.all_salary = $scope.staffs.reduce(getSumSalary, 0)
+    })
 }])
 
 app.controller('projectCtrl', ['$scope', '$http', '$rootScope', function($scope, $http, $rootScope) {

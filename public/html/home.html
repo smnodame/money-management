@@ -20,7 +20,7 @@
     <div class="col-md-12">
         <div class="form-group">
             <label class="control-label mb-1">งบประมาณโครงการคงเหลือ</label>
-            <input type="number" class="form-control" />
+            <input type="number" class="form-control" ng-value="budget_all - a_all - s_all - u_all"/>
         </div>
     </div>
     <div class="col-md-12">
@@ -65,7 +65,7 @@
                         <th scope="row">รวม</th>
                         <td></td>
                         <td>{{ last_month }}</td>
-                        <td>{{ used_budget }}</td>
+                        <td>{{ a_all = used_budget }}</td>
                         <td>{{ used_disburse }}</td>
                         <td>{{ percent }}</td>
                         <td>
@@ -101,34 +101,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>หัวหน้าโครงการวิจัย</td>
-                        <td>ดร กิตรา ปลาทอง</td>
-                        <td>10300</td>
-                        <td>125000</td>
-                        <td>
-                            <button type="button" class="btn btn-info">เเก้ไข</button>
-                            <button type="button" class="btn btn-warning">ลบ</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td>ผู้ช่วยโครงการ</td>
-                        <td>รองศาสตราจารย์ ดร มหาวิท กิจชัย</td>
-                        <td>10000</td>
-                        <td>11000</td>
-                        <td>
-                            <button type="button" class="btn btn-info">เเก้ไข</button>
-                            <button type="button" class="btn btn-warning">ลบ</button>
-                        </td>
-                    </tr>
-                    <tr>
-                    <th scope="row">3</th>
-                        <td>นักวิจัย</td>
-                        <td>ดช สาเหต เกตวัย</td>
-                        <td>5400</td>
-                        <td>10800</td>
+                    <tr ng-repeat="staff in staffs track by $index">
+                        <th scope="row">{{ $index + 1 }}</th>
+                        <td>{{ staff.position }}</td>
+                        <td>{{ staff.fullname }}</td>
+                        <td>{{ staff.salary  }}</td>
+                        <td>{{ s_all =  staff.salary * last_month }}</td>
                         <td>
                             <button type="button" class="btn btn-info">เเก้ไข</button>
                             <button type="button" class="btn btn-warning">ลบ</button>
@@ -140,8 +118,8 @@
                         <th scope="row">รวม</th>
                         <td></td>
                         <td></td>
-                        <td>50555</td>
-                        <td>150000</td>
+                        <td>{{ all_salary }}</td>
+                        <td>{{ all_salary * last_month }}</td>
                         <td></td>
                     </tr>
                 <tfoot>
@@ -190,7 +168,7 @@
                         <th scope="row">รวม</th>
                         <td></td>
                         <td>13</td>
-                        <td>{{ u_vate + f_vate + d_vate }}</td>
+                        <td>{{ u_all = u_vate + f_vate + d_vate }}</td>
                     </tr>
                 <tfoot>
                 </table>

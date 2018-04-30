@@ -40,6 +40,16 @@ app.get('/activities', (req, res) => {
   
 })
 
+app.get('/staff', (req, res) => {
+  const ref = db.ref("staff")
+  ref.on("value", function(snapshot) {
+    res.json(snapshot.val())
+  }, function (errorObject) {
+    res.status(500).send()
+  });
+  
+})
+
 app.post('/activities', (req, res) => {
     const activityRef = db.ref("activities")
     // const activityRef = ref.child("activities")
