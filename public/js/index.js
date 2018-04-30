@@ -100,6 +100,37 @@ app.controller('homeCtrl', ['$scope', '$http', '$rootScope', '$route', function(
         $scope.is_update_activity = false
     }
 
+    $scope.open_adding_staff = () => {
+        $scope.staff_name = null
+        $scope.staff_department = null
+        $scope.staff_type = null
+        $scope.staff_position = null
+        $scope.staff_salary = null
+        $scope.staff_skill = null
+
+        $scope.staff_type = 'บุคลากรหลัก'
+        $scope.staff_position = 'หัวหน้าโครงการ'
+        $scope.show_main = true
+        $scope.staff_salary = 30000
+        $scope.show_support = false
+
+        $scope.is_update_staff = false
+    }
+
+    $scope.update_staff = () => {
+        $http.put('/staff/' + $scope.staff_key, {
+            fullname: $scope.staff_name,
+            department: $scope.staff_department,
+            type: $scope.staff_type,
+            position: $scope.staff_position,
+            salary: parseInt($scope.staff_salary),
+            skill: $scope.staff_skill
+        })
+        .then(function(res) {
+            $route.reload()
+        })
+    }
+
     $scope.open_update_activity_modal = (index) => {
         $scope.activity_name = $scope.activities[index].name
         $scope.activity_budget = $scope.activities[index].budget
@@ -108,6 +139,18 @@ app.controller('homeCtrl', ['$scope', '$http', '$rootScope', '$route', function(
         $scope.activity_key = $scope.activities[index].key
 
         $scope.is_update_activity = true
+    }
+
+    $scope.open_updating_staff = (index) => {
+        $scope.staff_name = $scope.staffs[index].fullname
+        $scope.staff_department = $scope.staffs[index].department
+        $scope.staff_type = $scope.staffs[index].type
+        $scope.staff_position = $scope.staffs[index].position
+        $scope.staff_salary = $scope.staffs[index].salary
+        $scope.staff_skill = $scope.staffs[index].skill
+        $scope.staff_key = $scope.staffs[index].key
+
+        $scope.is_update_staff = true
     }
 
     $scope.update_activity = () => {

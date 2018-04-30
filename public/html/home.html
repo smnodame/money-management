@@ -82,7 +82,7 @@
             <div class="card-header">
                 <strong class="card-title">ค่าใช้จ่ายบุคลากร</strong>
                 <div class="float-right">
-                    <button type="button" class="btn btn-info"  data-toggle="modal" data-target="#staff">เพิ่ม</button>
+                    <button type="button" class="btn btn-info" ng-click="open_adding_staff()"  data-toggle="modal" data-target="#staff">เพิ่ม</button>
                 </div>
             </div>
             <div class="card-body">
@@ -105,7 +105,7 @@
                         <td>{{ staff.salary  }}</td>
                         <td>{{   staff.salary * last_month }}</td>
                         <td>
-                            <button type="button" class="btn btn-info">เเก้ไข</button>
+                            <button type="button" class="btn btn-info" ng-click="open_updating_staff($index)"  data-toggle="modal" data-target="#staff">เเก้ไข</button>
                             <button type="button" class="btn btn-warning" ng-click="del_staff(staff.key)" >ลบ</button>
                         </td>
                     </tr>
@@ -267,11 +267,11 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="sel1">ตำเเหน่ง</label>
-                                <select class="form-control" style="font-size: 13px; height: 32px;" ng-show="show_main" ng-model="staff_position" ng-change="position_change()">
+                                <select class="form-control" style="font-size: 13px; height: 32px;" ng-show="staff_position == 'หัวหน้าโครงการ' || staff_position == 'นักวิจัย'" ng-model="staff_position" ng-change="position_change()">
                                     <option>หัวหน้าโครงการ</option>
                                     <option>นักวิจัย</option>
                                 </select>
-                                <select class="form-control" style="font-size: 13px; height: 32px;" ng-show="show_support" ng-model="staff_position" ng-change="position_change()">
+                                <select class="form-control" style="font-size: 13px; height: 32px;" ng-show="staff_position == 'ผู้ช่วยนักวิจัย' || staff_position == 'เลขานุการ'" ng-model="staff_position" ng-change="position_change()">
                                         <option>ผู้ช่วยนักวิจัย</option>
                                         <option>เลขานุการ</option>
                                 </select>
@@ -291,7 +291,8 @@
                         </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-success" ng-disabled="!can_add_staff()" data-dismiss="modal" ng-click="add_staff()">เพิ่ม</button>
+                    <button type="button" class="btn btn-success" ng-disabled="!can_add_staff()" data-dismiss="modal" ng-click="add_staff()" ng-show="!is_update_staff">เพิ่ม</button>
+                    <button type="button" class="btn btn-success" ng-disabled="!can_add_staff()" data-dismiss="modal" ng-click="update_staff()" ng-show="is_update_staff">อัพเดท</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">ปิด</button>
                 </div>
             </div>

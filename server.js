@@ -78,6 +78,13 @@ app.post('/staff', (req, res) => {
   res.json(res.body)
 })
 
+app.put('/staff/:id', (req, res) => {
+  const ref = db.ref("staff")
+  const staffRef = ref.child(req.params.id)
+  staffRef.update(req.body)
+  res.json(res.body)
+})
+
 app.delete('/staff/:id', (req, res) => {
   const ref = db.ref("staff")
   const staffRef = ref.child(req.params.id)
