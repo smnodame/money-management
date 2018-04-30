@@ -18,13 +18,13 @@
     <div class="col-md-12">
         <div class="form-group">
             <label class="control-label mb-1">งบประมาณทั้งหมด</label>
-            <input type="number" class="form-control" ng-model="budget" />
+            <input type="number" class="form-control" ng-model="budget" ng-disabled="true" />
         </div>
     </div>
     <div class="col-md-12">
         <div class="form-group">
             <label class="control-label mb-1">งบประมาณเหลือ</label>
-            <input type="number" class="form-control" />
+            <input type="number" class="form-control" ng-value="budget - sum_price" ng-disabled="true" />
         </div>
     </div>
     
@@ -54,6 +54,15 @@
                         <td>{{ activity.condition }}</td>
                     </tr>
                 </tbody>
+                <tfoot>
+                    <tr>
+                        <th scope="row">รวม</th>
+                        <td></td>
+                        <td></td>
+                        <td>{{ sum_price }}</td>
+                        <td></td>
+                    </tr>
+                <tfoot>
                 </table>
             </div>
         </div>
@@ -100,7 +109,7 @@
                     </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success" ng-click="add_activity()" data-dismiss="modal">เพิ่ม</button>
+                <button type="button" class="btn btn-success" ng-click="add_activity()" data-dismiss="modal" ng-disabled="!validation()">เพิ่ม</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">ปิด</button>
             </div>
         </div>

@@ -255,7 +255,7 @@ app.controller('homeCtrl', ['$scope', '$http', '$rootScope', '$route', '$locatio
     }
 }])
 
-app.controller('projectCtrl', ['$scope', '$http', '$rootScope', '$routeParams', function($scope, $http, $rootScope, $routeParams) {
+app.controller('projectCtrl', ['$scope', '$http', '$rootScope', '$routeParams', '$route', function($scope, $http, $rootScope, $routeParams, $route) {
     
     $(function () {
         $("#datepicker").datepicker({ 
@@ -263,6 +263,10 @@ app.controller('projectCtrl', ['$scope', '$http', '$rootScope', '$routeParams', 
             todayHighlight: true
         }).datepicker('update', new Date())
     })
+
+    function getSum(total, ac) {
+        return total + ac.price
+    }
 
     $http.get('/activities/'+ $routeParams.id )
     .then(function(res) {
@@ -276,23 +280,23 @@ app.controller('projectCtrl', ['$scope', '$http', '$rootScope', '$routeParams', 
             }
         })
 
+        $scope.sum_price = data.reduce(getSum, 0)
         $scope.activities = data
     })
 
     $scope.add_activity = () => {
-        console.log($scope.new_name)
-        console.log($scope.new_price)
-        console.log($scope.new_date)
-        console.log($scope.new_condition)
-
         $http.post('/activities/'+ $routeParams.id, {
             name: $scope.new_name,
-            price: $scope.new_price,
+            price: parseInt($scope.new_price),
             date: $scope.new_date,
-            condition: $scope.new_condition
+            condition: $scope.new_condition || '-'
         })
         .then(function(res) {
-
+            $route.reload()
         })
+    }
+
+    $scope.validation = () => {
+        return $scope.new_name && $scope.new_price && $scope.new_date
     }
 }])
