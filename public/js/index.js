@@ -32,6 +32,11 @@ app.controller('homeCtrl', ['$scope', '$http', '$rootScope', function($scope, $h
     
     $http.get('/activities')
     .then(function(res) {
+        const data = Object.keys(res.data).map((key) => {
+            return res.data[key]
+        })
+        res.data = data
+
         $scope.activities = res.data
 
         const end_arr = res.data.map((ac) => {
@@ -53,17 +58,40 @@ app.controller('homeCtrl', ['$scope', '$http', '$rootScope', function($scope, $h
         $scope.used_disburse = disburse_arr
         $scope.percent = ( disburse_arr / budget_arr ) * 100
         $scope.last_month = Math.max(...end_arr)
+        return res
+    }).then(() => {
+        $http.get('/staff').then((res) => {
+            const data = Object.keys(res.data).map((key) => {
+                return res.data[key]
+            })
+            res.data = data
+            
+            $scope.staffs = res.data
+    
+            function getSumSalary(total, ac) {
+                return total + ac.salary
+            }
+    
+            $scope.all_salary = $scope.staffs.reduce(getSumSalary, 0)
+        })
     })
 
-    $http.get('/staff').then((res) => {
-        $scope.staffs = res.data
+    $scope.add_activity = () => {
+        $http.post('/activities', {
+            name: $scope.activity_name,
+            budget: parseInt($scope.activity_budget),
+            start: parseInt($scope.activity_start),
+            end: parseInt($scope.activity_end),
+            disburse:  0
+        })
+        .then(function(res) {
+            location.reload()
+        })
+    }
 
-        function getSumSalary(total, ac) {
-            return total + ac.salary
-        }
-
-        $scope.all_salary = $scope.staffs.reduce(getSumSalary, 0)
-    })
+    $scope.add_validation = () => {
+        return $scope.activity_name && $scope.activity_budget && $scope.activity_start && $scope.activity_end && ($scope.activity_start <= $scope.activity_end)
+    }
 }])
 
 app.controller('projectCtrl', ['$scope', '$http', '$rootScope', function($scope, $http, $rootScope) {

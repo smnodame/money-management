@@ -32,7 +32,7 @@ app.get('/', (req, res) => {
 
 app.get('/activities', (req, res) => {
   const ref = db.ref("activities")
-  ref.on("value", function(snapshot) {
+  ref.once("value", function(snapshot) {
     res.json(snapshot.val())
   }, function (errorObject) {
     res.status(500).send()
@@ -42,7 +42,7 @@ app.get('/activities', (req, res) => {
 
 app.get('/staff', (req, res) => {
   const ref = db.ref("staff")
-  ref.on("value", function(snapshot) {
+  ref.once("value", function(snapshot) {
     res.json(snapshot.val())
   }, function (errorObject) {
     res.status(500).send()
@@ -55,7 +55,7 @@ app.post('/activities', (req, res) => {
     // const activityRef = ref.child("activities")
     activityRef.push().set(req.body)
     
-    // res.json(books.find(book => book.id === req.params.id))
+    res.json(res.body)
 })
 
 // app.put('/books/:id', (req, res) => {
