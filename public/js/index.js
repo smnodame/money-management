@@ -105,6 +105,21 @@ app.controller('homeCtrl', ['$scope', '$http', '$rootScope', '$route', function(
     $scope.add_validation = () => {
         return $scope.activity_name && $scope.activity_budget && $scope.activity_start && $scope.activity_end && ($scope.activity_start <= $scope.activity_end)
     }
+
+    $scope.staff_type = 'บุคลากรหลัก'
+    $scope.staff_position = 'หัวหน้าโครงการ'
+    $scope.show_main = true
+    $scope.type_change = () => {
+        if($scope.staff_type == 'บุคลากรหลัก') {
+            $scope.show_main = true
+            $scope.show_support = false
+            $scope.staff_position = 'หัวหน้าโครงการ'
+        } else {
+            $scope.show_main = false
+            $scope.show_support = true
+            $scope.staff_position = 'ผู้ช่วยนักวิจัย'
+        }
+    }
 }])
 
 app.controller('projectCtrl', ['$scope', '$http', '$rootScope', function($scope, $http, $rootScope) {

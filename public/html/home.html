@@ -246,21 +246,21 @@
                 <div class="modal-body">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label class="control-label mb-1">ชื่อ + นามสกุล</label>
+                                <label class="control-label mb-1" ng-model="staff_name">ชื่อ + นามสกุล</label>
                                 <input type="text" class="form-control" />
                             </div>
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label class="control-label mb-1">หน่วยงาน</label>
-                                <input type="number" class="form-control" />
+                                <input type="number" class="form-control" ng-model="staff_department" />
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="sel1">ประเภท</label>
-                                <select class="form-control" style="font-size: 13px; height: 32px;">
-                                    <option>บุคลาการหลัก</option>
+                                <select class="form-control" style="font-size: 13px; height: 32px;" ng-model="staff_type" ng-change="type_change()">
+                                    <option>บุคลากรหลัก</option>
                                     <option>บุคลากรสนันสนุน</option>
                                 </select>
                             </div>
@@ -268,16 +268,20 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="sel1">ตำเเหน่ง</label>
-                                <select class="form-control" style="font-size: 13px; height: 32px;">
+                                <select class="form-control" style="font-size: 13px; height: 32px;" ng-show="show_main" ng-model="staff_position">
                                     <option>หัวหน้าโครงการ</option>
                                     <option>นักวิจัย</option>
+                                </select>
+                                <select class="form-control" style="font-size: 13px; height: 32px;" ng-show="show_support" ng-model="staff_position">
+                                        <option>ผู้ช่วยนักวิจัย</option>
+                                        <option>เลขานุการ</option>
                                 </select>
                             </div>
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="comment">ทักษะ</label>
-                                <textarea class="form-control" rows="3" id="comment"></textarea>
+                                <textarea class="form-control" rows="3" ng-model="staff_skill"></textarea>
                             </div>
                         </div>
                 </div>
