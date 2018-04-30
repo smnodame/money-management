@@ -40,13 +40,12 @@
                         <th scope="col">เดือน</th>
                         <th scope="col">งบประมาณต่อกิจกรรม/บาท</th>
                         <th scope="col">เบิกจ่าย</th>
-                        
                         <th scope="col">ร้อยละการเบิกจ่าย (ระบบคำนวณเป็น %)</th>
                         <th scope="col">action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="activity in activities track by $index" ng-click="navigate(activity.key)">
+                    <tr ng-repeat="activity in activities track by $index" >
                         <th scope="row">{{ $index + 1 }} </th>
                         <td>{{ activity.name }}</td>
                         <td>กิจกรรมเดือน {{ activity.start }} - {{ activity.end }}</td>
@@ -54,8 +53,9 @@
                         <td>{{ activity.disburse }}</td>
                         <td>{{ (activity.disburse * 100 ) / activity.budget  }}</td>
                         <td>
-                                <button type="button" class="btn btn-info" ng-click="open_update_activity_modal($index)" data-toggle="modal" data-target="#myModal">เเก้ไข</button> 
-                                <button type="button" class="btn btn-warning" ng-click="del_activity(activity.key)">ลบ</button>
+                            <button type="button" class="btn btn-success" ng-click="navigate(activity.key)">ดู</button>
+                            <button type="button" class="btn btn-info" ng-click="open_update_activity_modal($index)" data-toggle="modal" data-target="#myModal">เเก้ไข</button> 
+                            <button type="button" class="btn btn-warning" ng-click="del_activity(activity.key)">ลบ</button>
                         </td>
                     </tr>
                 
@@ -67,7 +67,7 @@
                         <td>{{ last_month }}</td>
                         <td>{{ a_all = used_budget }}</td>
                         <td>{{ used_disburse }}</td>
-                        <td>{{ percent }}</td>
+                        <td>{{ percent.toFixed(2) }}</td>
                         <td>
                         </td>
                     </tr>
