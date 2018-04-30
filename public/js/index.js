@@ -32,38 +32,7 @@ app.controller('homeCtrl', ['$scope', '$http', '$rootScope', '$route', function(
     
     $http.get('/activities')
     .then(function(res) {
-        const data = Object.keys(res.data).map((key) => {
-            return {
-                ...res.data[key],
-                key: key
-            }
-        })
-        res.data = data
-
-        $scope.activities = res.data
-
-        const end_arr = res.data.map((ac) => {
-            return ac.end
-        })
-
-        function getSumBudget(total, ac) {
-            return total + ac.budget
-        }
-
-        function getSumDisburse(total, ac) {
-            return total + ac.disburse
-        }
-
-        const budget_arr = res.data.reduce(getSumBudget, 0)
-        const disburse_arr = res.data.reduce(getSumDisburse, 0)
-
-        $scope.used_budget = budget_arr
-        $scope.used_disburse = disburse_arr
-        $scope.percent = ( disburse_arr / budget_arr ) * 100
-        $scope.last_month = Math.max(...end_arr)
-        return res
-    }).then(() => {
-        $http.get('/staff').then((res) => {
+        if(res.data) {
             const data = Object.keys(res.data).map((key) => {
                 return {
                     ...res.data[key],
@@ -71,14 +40,56 @@ app.controller('homeCtrl', ['$scope', '$http', '$rootScope', '$route', function(
                 }
             })
             res.data = data
-
-            $scope.staffs = res.data
     
-            function getSumSalary(total, ac) {
-                return total + ac.salary
+            $scope.activities = res.data
+    
+            const end_arr = res.data.map((ac) => {
+                return ac.end
+            })
+    
+            function getSumBudget(total, ac) {
+                return total + ac.budget
             }
     
-            $scope.all_salary = $scope.staffs.reduce(getSumSalary, 0)
+            function getSumDisburse(total, ac) {
+                return total + ac.disburse
+            }
+    
+            const budget_arr = res.data.reduce(getSumBudget, 0)
+            const disburse_arr = res.data.reduce(getSumDisburse, 0)
+    
+            $scope.used_budget = budget_arr
+            $scope.used_disburse = disburse_arr
+            $scope.percent = ( disburse_arr / budget_arr ) * 100
+            $scope.last_month = Math.max(...end_arr)
+            return res
+        }
+        $scope.used_budget = 0
+        $scope.used_disburse = 0
+        $scope.percent = 0
+        $scope.last_month = 0
+        return res
+    }).then(() => {
+        $http.get('/staff').then((res) => {
+            if(res.data) {
+                const data = Object.keys(res.data).map((key) => {
+                    return {
+                        ...res.data[key],
+                        key: key
+                    }
+                })
+                res.data = data
+    
+                $scope.staffs = res.data
+        
+                function getSumSalary(total, ac) {
+                    return total + ac.salary
+                }
+        
+                $scope.all_salary = $scope.staffs.reduce(getSumSalary, 0)
+                return res
+            }
+            $scope.all_salary = 0
         })
     })
 
