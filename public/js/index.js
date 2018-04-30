@@ -14,7 +14,7 @@ app.config(function($routeProvider) {
  
 })
 
-app.controller('homeCtrl', ['$scope', '$http', '$rootScope', '$route', function($scope, $http, $rootScope, $route) {
+app.controller('homeCtrl', ['$scope', '$http', '$rootScope', '$route', '$location', function($scope, $http, $rootScope, $route, $location) {
     $(function () {
         $("#datepicker-start").datepicker({ 
                 autoclose: true, 
@@ -249,16 +249,50 @@ app.controller('homeCtrl', ['$scope', '$http', '$rootScope', '$route', function(
             $route.reload()
         })
     }
+
+    $scope.navigate = (key) => {
+        $location.path(key)
+    }
 }])
 
-app.controller('projectCtrl', ['$scope', '$http', '$rootScope', function($scope, $http, $rootScope) {
+app.controller('projectCtrl', ['$scope', '$http', '$rootScope', '$routeParams', function($scope, $http, $rootScope, $routeParams) {
     
     $(function () {
         $("#datepicker").datepicker({ 
-                autoclose: true, 
-                todayHighlight: true
+            autoclose: true, 
+            todayHighlight: true
         }).datepicker('update', new Date())
-
-
     })
+
+    $http.get('/activities/'+ $routeParams.id )
+    .then(function(res) {
+        $scope.budget = res.data.budget
+        $scope.name = res.data.name
+        
+        const data = Object.keys(res.data.activities).map((key) => {
+            return {
+                ...res.data.activities[key],
+                key: key
+            }
+        })
+
+        $scope.activities = data
+    })
+
+    $scope.add_activity = () => {
+        console.log($scope.new_name)
+        console.log($scope.new_price)
+        console.log($scope.new_date)
+        console.log($scope.new_condition)
+
+        $http.post('/activities/'+ $routeParams.id, {
+            name: $scope.new_name,
+            price: $scope.new_price,
+            date: $scope.new_date,
+            condition: $scope.new_condition
+        })
+        .then(function(res) {
+
+        })
+    }
 }])

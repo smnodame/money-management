@@ -46,7 +46,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="activity in activities track by $index">
+                    <tr ng-repeat="activity in activities track by $index" ng-click="navigate(activity.key)">
                         <th scope="row">{{ $index + 1 }} </th>
                         <td>{{ activity.name }}</td>
                         <td>กิจกรรมเดือน {{ activity.start }} - {{ activity.end }}</td>

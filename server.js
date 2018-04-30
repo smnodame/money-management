@@ -40,6 +40,16 @@ app.get('/activities', (req, res) => {
   
 })
 
+app.get('/activities/:id', (req, res) => {
+  const ref = db.ref("activities")
+  const activityRef = ref.child(req.params.id)
+  activityRef.once("value", function(snapshot) {
+    res.json(snapshot.val())
+  }, function (errorObject) {
+    res.status(500).send()
+  });
+})
+
 app.get('/staff', (req, res) => {
   const ref = db.ref("staff")
   ref.once("value", function(snapshot) {
@@ -68,6 +78,13 @@ app.put('/activities/:id', (req, res) => {
 app.post('/activities', (req, res) => {
   const activityRef = db.ref("activities")
   // const activityRef = ref.child("activities")
+  activityRef.push().set(req.body)
+  res.json(res.body)
+})
+
+app.post('/activities/:id', (req, res) => {
+  const ref = db.ref("activities/"+ req.params.id)
+  const activityRef = ref.child("activities")
   activityRef.push().set(req.body)
   res.json(res.body)
 })
