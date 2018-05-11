@@ -18,13 +18,25 @@ app.config(function($routeProvider) {
         controller: 'summaryCtrl'
     })
     .otherwise({redirectTo : '/'})
-}).run(() => {
- 
 })
+
+app.run(function($rootScope) { 
+    $rootScope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams) {
+      if (fromState.name === "") { 
+        // The initial transition comes from "root", which uses the empty string as a name.
+        alert("initial state: " + toState.name);
+      }
+    });
+  });
 
 app.controller('summaryCtrl', [
     '$scope', '$http', function ($scope, $http) {
-        
+        $http.get('/info')
+        .then(function(res) {
+            if(res.data && res.data.name) {
+                $scope.name = res.data.name || ''            
+            }
+        })
         $scope.budget_all = 1000000
         $scope.activity_select_all = true
         $scope.staff_select_all = true
@@ -299,7 +311,7 @@ app.controller('summaryCtrl', [
                         text:  title
                     },
                     tooltip: {
-                        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                        pointFormat: '{series.name}: <b>{point.y}</b>'
                     },
                     plotOptions: {
                         pie: {
@@ -326,6 +338,7 @@ app.controller('summaryCtrl', [
             Highcharts.chart('container-staff', get_options_graph('สัดส่วนค่าใช้จ่ายบุคลากร', staffs))
             Highcharts.chart('container-organize', get_options_graph('สัดส่วนค่าใช้มหาวิทยาลัย', organize))
             Highcharts.chart('container-type', get_options_graph('สัดส่วนค่าใช้จ่ายตามประเภท', all))
+            
         }
     }
 ])
