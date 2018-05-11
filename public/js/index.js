@@ -24,6 +24,7 @@ app.config(function($routeProvider) {
 
 app.controller('summaryCtrl', [
     '$scope', '$http', function ($scope, $http) {
+        
         $scope.budget_all = 1000000
         $scope.activity_select_all = true
         $scope.staff_select_all = true
@@ -76,6 +77,7 @@ app.controller('summaryCtrl', [
             var chart = $('#container-organize').highcharts();
             const organize_selected = filter_organize()
             chart.series[0].setData(organize_selected)
+            rereder_type_chart()
         }
 
         $http.get('/activities')
@@ -118,8 +120,6 @@ app.controller('summaryCtrl', [
             $scope.used_disburse = 0
             $scope.percent = 0
             $scope.last_month = 0
-
-            
             return res
         }).then(() => {
             $http.get('/staff').then((res) => {
@@ -187,6 +187,8 @@ app.controller('summaryCtrl', [
             }
 
             chart.series[0].setData(staff_selected)
+
+            rereder_type_chart()
         }
 
         $scope.on_selected_activity_changed = () => {
@@ -200,6 +202,8 @@ app.controller('summaryCtrl', [
             }
 
             chart.series[0].setData(activity_selected)
+
+            rereder_type_chart()
         }
 
         const filter_staff_selected = () => {
@@ -208,7 +212,7 @@ app.controller('summaryCtrl', [
             }).map((staff) => {
                 return {
                     name: staff.fullname,
-                    y: staff.salary
+                    y: staff.salary * $scope.last_month
                 }
             })
         }
@@ -224,9 +228,48 @@ app.controller('summaryCtrl', [
             })
         }
 
+        const filter_all = () => {
+            const activities = filter_activity_selected().reduce((n, o) => {
+                return n + o.y
+            }, 0)
+            const staffs = filter_staff_selected().reduce((n, o) => {
+                return n + o.y
+            }, 0)
+            const organize = filter_organize()
+            const organize_all = organize.reduce((n, o) => {
+                return n + o.y
+            }, 0)
+            const remain = $scope.budget_all - (organize_all + staffs + activities)
+            return [
+                ...organize,
+
+                {
+                    name: 'ค่าใช้จ่ายกิจกรรม',
+                    y: activities
+                },
+                {
+                    name: 'ค่าใช้จ่ายบุคลากร',
+                    y: staffs
+                },
+                {
+                    name: 'คงเหลือ',
+                    y: remain
+                }
+            ]
+        }
+
+        const rereder_type_chart = () => {
+            var chart = $('#container-type').highcharts();
+            const all = filter_all()
+            chart.series[0].setData(all)
+        }
+
         const render_chart = () => {
             const activities = filter_activity_selected()
             const staffs = filter_staff_selected()
+            const organize = filter_organize()
+            const all = filter_all()
+            
             // Radialize the colors
             Highcharts.setOptions({
                 colors: Highcharts.map(Highcharts.getOptions().colors, function (color) {
@@ -281,18 +324,15 @@ app.controller('summaryCtrl', [
 
             Highcharts.chart('container', get_options_graph('สัดส่วนค่าใช้จ่ายกิจกรรม', activities))
             Highcharts.chart('container-staff', get_options_graph('สัดส่วนค่าใช้จ่ายบุคลากร', staffs))
-            Highcharts.chart('container-organize', get_options_graph('สัดส่วนค่าใช้มหาวิทยาลัย', [
-                { name: 'มหาวิทยาลัย', y: 10 },
-                { name: 'คณะ', y: 2 },
-                { name: 'ภาค', y: 1 },
-            ]))
+            Highcharts.chart('container-organize', get_options_graph('สัดส่วนค่าใช้มหาวิทยาลัย', organize))
+            Highcharts.chart('container-type', get_options_graph('สัดส่วนค่าใช้จ่ายตามประเภท', all))
         }
     }
 ])
 
 app.controller('sidebarCtrl', [
-    '$scope', '$location', '$route',
-    function($scope, $location, $route) {
+    '$scope', '$location', '$route', '$rootScope',
+    function($scope, $location, $route, $rootScope) {
 
         $scope.navigate_home = () => {
             $location.path('')
