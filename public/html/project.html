@@ -133,7 +133,7 @@
                         <td></td>
                         <td>{{ all_salary }}</td>
                         <td>{{ s_all = all_salary * last_month }}</td>
-                        <td>{{ (budget_all / s_all).toFixed(2) }}</td>
+                        <td>{{ ((s_all) * 100 / budget_all ).toFixed(2) }}</td>
                     </tr>
                 <tfoot>
                 </table>

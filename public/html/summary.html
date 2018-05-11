@@ -1,45 +1,148 @@
  <!-- Header-->
- <header id="header" class="header">
-        <div class="header-menu">
-            <div class="col-sm-8">
-                <div class="page-header float-left">
-                        <h1> สรุปผลโครงการ </h1>
-                </div>
+ <header id="header" class="header" style="margin-bottom: 15px;">
+    <div class="header-menu">
+        <div class="col-sm-8">
+            <div class="page-header float-left">
+                    <h1> สรุปผลโครงการ </h1>
             </div>
         </div>
-    </header><!-- /header -->
-    
-    <div class="content mt-3">
-        <div class="col-md-12">
-            <table class="table table-bordered" style="background-color: white">
-                <thead>
-                    <tr>
-                        <th rowspan="2" style="text-align: center; padding: 24px">กิจกรรม</th>
-                        <th colspan="{{ last_month }}" style="text-align: center;">
-                            เดือนที่
-                        </th>
-                    </tr>
-                    <tr>
-                        <th style="width: 40px; text-align: center" ng-repeat="month in months track by $index">
-                            {{ month + 1 }}
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="activity in activities track by $index">
-                        <td>{{ activity.name }}</td>
-                        <td style="text-align: center" ng-repeat="month in months track by $index">
-                            <i class="fa fa-check" ng-if="month + 1 >=  activity.start && month + 1 <=  activity.end"></i>
-                        </td>
-                    </tr>
-                    <tr ng-if="activities.length == 0">
-                        <td colspan="11" style="text-align: center;">ยังไม่มีข้อมูล</td>
-                    </tr>
-                </tbody>
+    </div>
+</header><!-- /header -->
+
+<div class="col-md-12">
+    <div class="card">
+        <div class="card-header">
+            <strong class="card-title">กิจกรรม</strong>
+        </div>
+        <div class="card-body">
+            <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">กิจกรรม</th>
+                    <th scope="col">เดือน</th>
+                    <th scope="col">งบประมาณต่อกิจกรรม/บาท</th>
+                    <th scope="col">เบิกจ่าย</th>
+                    <th scope="col">ร้อยละการเบิกจ่าย (ระบบคำนวณเป็น %)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="activity in activities track by $index" >
+                    <th scope="row">{{ $index + 1 }} </th>
+                    <td>{{ activity.name }}</td>
+                    <td>กิจกรรมเดือน {{ activity.start }} - {{ activity.end }}</td>
+                    <td>{{ activity.budget }}</td>
+                    <td>{{ activity.disburse }}</td>
+                    <td>{{ (activity.disburse * 100 ) / activity.budget  }}</td>
+                </tr>
+            
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th scope="row">รวม</th>
+                    <td></td>
+                    <td>{{ last_month }}</td>
+                    <td>{{ a_all = used_budget }}</td>
+                    <td>{{ used_disburse }}</td>
+                    <td>{{ percent.toFixed(2) }}</td>
+                </tr>
+            <tfoot>
             </table>
         </div>
-    </div> <!-- .content -->
+    </div>
+</div>
     
+<div class="col-md-12">
+    <div class="card">
+        <div class="card-header">
+            <strong class="card-title">ค่าใช้จ่ายบุคลากร</strong>
+            <div class="float-right">
+            </div>
+        </div>
+        <div class="card-body">
+            <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">ตำเเหน่ง</th>
+                    <th scope="col">ชื่อ</th>
+                    <th scope="col">อัตรา / เดือน</th>
+                    <th scope="col">จำนวน (บาท)</th>
+                    <th scope="col">ร้อยละต่องบประมาณทั้งหมด</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="staff in staffs track by $index">
+                    <th scope="row">{{ $index + 1 }}</th>
+                    <td>{{ staff.position }}</td>
+                    <td>{{ staff.fullname }}</td>
+                    <td>{{ staff.salary  }}</td>
+                    <td>{{  staff.salary * last_month }}</td>
+                    <td>{{  ((staff.salary * last_month) * 100 / budget_all ).toFixed(2) }}</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th scope="row">รวม</th>
+                    <td></td>
+                    <td></td>
+                    <td>{{ all_salary }}</td>
+                    <td>{{ s_all = all_salary * last_month }}</td>
+                    <td>{{ ((s_all) * 100 / budget_all ).toFixed(2) }}</td>
+                </tr>
+            <tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="col-md-12">
+    <div class="card">
+        <div class="card-header">
+            <strong class="card-title">ค่าใช้จ่ายมหาวิทยาลัย</strong>
+        </div>
+        <div class="card-body">
+            <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">รายการ</th>
+                    <th scope="col">เปอเซ็น</th>
+                    <th scope="col">จำนวนเงิน</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">1</th>
+                    <td>มหาวิทยาลัย</td>
+                    <td>10</td>
+                    <td>{{ u_vate = budget_all * 0.1 }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">2</th>
+                    <td>คณะ</td>
+                    <td>2</td>
+                    <td>{{ f_vate = budget_all * 0.02 }}</td>
+                </tr>
+                <tr>
+                <th scope="row">3</th>
+                    <td>ภาค</td>
+                    <td>1</td>
+                    <td>{{ d_vate = budget_all * 0.01 }}</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th scope="row">รวม</th>
+                    <td></td>
+                    <td>13</td>
+                    <td>{{ u_all = u_vate + f_vate + d_vate }}</td>
+                </tr>
+            <tfoot>
+            </table>
+        </div>
+    </div>
+</div>
     
     
     
