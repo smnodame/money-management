@@ -27,6 +27,56 @@ app.controller('summaryCtrl', [
         $scope.budget_all = 1000000
         $scope.activity_select_all = true
         $scope.staff_select_all = true
+        $scope.organize_all_selected = true
+        $scope.university_selected = true
+        $scope.factory_selected = true
+        $scope.department_selected = true
+
+        $scope.organize_all_selected_change = () => {
+            if($scope.organize_all_selected) {
+                $scope.university_selected = true
+                $scope.factory_selected = true
+                $scope.department_selected = true
+            } else {
+                $scope.university_selected = false
+                $scope.factory_selected = false
+                $scope.department_selected = false
+            }
+            rerender_organize_chart()
+        }
+
+        $scope.sub_organize_change = () => {
+            rerender_organize_chart()
+        }
+
+        const filter_organize = () => {
+            const organize_data = []
+            if($scope.university_selected) {
+                organize_data.push({
+                    name: 'มหาวิทยาลัย',
+                    y: $scope.u_vate
+                })
+            }
+            if($scope.factory_selected) {
+                organize_data.push({
+                    name: 'คณะ',
+                    y: $scope.f_vate
+                })
+            }
+            if($scope.department_selected) {
+                organize_data.push({
+                    name: 'ภาค',
+                    y: $scope.d_vate
+                })
+            }
+            return organize_data
+        }
+
+        const rerender_organize_chart = () => {
+            var chart = $('#container-organize').highcharts();
+            const organize_selected = filter_organize()
+            chart.series[0].setData(organize_selected)
+        }
 
         $http.get('/activities')
         .then(function(res) {
@@ -231,24 +281,32 @@ app.controller('summaryCtrl', [
 
             Highcharts.chart('container', get_options_graph('สัดส่วนค่าใช้จ่ายกิจกรรม', activities))
             Highcharts.chart('container-staff', get_options_graph('สัดส่วนค่าใช้จ่ายบุคลากร', staffs))
+            Highcharts.chart('container-organize', get_options_graph('สัดส่วนค่าใช้มหาวิทยาลัย', [
+                { name: 'มหาวิทยาลัย', y: 10 },
+                { name: 'คณะ', y: 2 },
+                { name: 'ภาค', y: 1 },
+            ]))
         }
     }
 ])
 
 app.controller('sidebarCtrl', [
-    '$scope', '$location',
-    function($scope, $location) {
+    '$scope', '$location', '$route',
+    function($scope, $location, $route) {
 
         $scope.navigate_home = () => {
             $location.path('')
+            $route.reload()
         }
 
         $scope.navigate_project = () => {
             $location.path('/project')
+            $route.reload()
         }
 
         $scope.navigate_summary = () => {
             $location.path('/summary')
+            $route.reload()
         }
     }
 ])
@@ -491,7 +549,7 @@ app.controller('projectCtrl', ['$scope', '$http', '$rootScope', '$route', '$loca
     }
 
     $scope.add_validation = () => {
-        return $scope.activity_name && $scope.activity_budget && $scope.activity_start && $scope.activity_end && ($scope.activity_start <= $scope.activity_end)
+        return $scope.activity_name && ($scope.activity_budget >= 0) && $scope.activity_start && $scope.activity_end && ($scope.activity_start <= $scope.activity_end)
     }
 
     $scope.staff_type = 'บุคลากรหลัก'

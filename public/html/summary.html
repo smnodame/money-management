@@ -111,7 +111,7 @@
             <table class="table table-striped">
             <thead>
                 <tr>
-                    <th scope="col"> <input type="checkbox" name="vehicle" value="Bike"> </th>
+                    <th scope="col"> <input type="checkbox" ng-model="organize_all_selected" ng-change="organize_all_selected_change()"> </th>
                     <th scope="col">รายการ</th>
                     <th scope="col">เปอเซ็น</th>
                     <th scope="col">จำนวนเงิน</th>
@@ -119,19 +119,19 @@
             </thead>
             <tbody>
                 <tr>
-                    <th scope="row"> <input type="checkbox" name="vehicle" value="Bike"> </th>
+                    <th scope="row"> <input type="checkbox" ng-model="university_selected" ng-change="sub_organize_change()"> </th>
                     <td>มหาวิทยาลัย</td>
                     <td>10</td>
                     <td>{{ u_vate = budget_all * 0.1 }}</td>
                 </tr>
                 <tr>
-                    <th scope="row"> <input type="checkbox" name="vehicle" value="Bike"> </th>
+                    <th scope="row"> <input type="checkbox" ng-model="factory_selected" ng-change="sub_organize_change()"> </th>
                     <td>คณะ</td>
                     <td>2</td>
                     <td>{{ f_vate = budget_all * 0.02 }}</td>
                 </tr>
                 <tr>
-                <th scope="row"><input type="checkbox" name="vehicle" value="Bike"></th>
+                <th scope="row"><input type="checkbox" ng-model="department_selected" ng-change="sub_organize_change()"></th>
                     <td>ภาค</td>
                     <td>1</td>
                     <td>{{ d_vate = budget_all * 0.01 }}</td>
@@ -146,6 +146,8 @@
                 </tr>
             <tfoot>
             </table>
+
+            <div id="container-organize" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto; margin-top: 40px"></div>
         </div>
     </div>
 </div>
