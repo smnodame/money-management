@@ -17,12 +17,70 @@ app.config(function($routeProvider) {
 }).run(() => {
  
 })
-app.controller('homeCtrl', [
-    '$scope',
-    function($scope) {
+
+app.controller('sidebarCtrl', [
+    '$scope', '$location',
+    function($scope, $location) {
         
+        $scope.navigate_home = () => {
+            $location.path('')
+        }
+
+        $scope.navigate_project = () => {
+            $location.path('/project')
+        }
+
+        $scope.navigate_summary = () => {
+            $location.path('/summary')
+        }
     }
 ])
+
+app.controller('homeCtrl', [
+    '$scope', '$http',
+    function($scope, $http) {
+        $http.get('/info')
+        .then(function(res) {
+            if(res.data && res.data.name) {
+                $scope.name = res.data.name || ''            
+            }
+        })
+        $scope.activities = []
+        $scope.last_month = 10
+        $scope.months = Array.from(Array(10).keys())
+        
+        $http.get('/activities')
+        .then(function(res) {
+            if(res.data) {
+                const data = Object.keys(res.data).map((key) => {
+                    return {
+                        ...res.data[key],
+                        key: key
+                    }
+                })
+                res.data = data
+                
+                if(!res.data) {
+                    return
+                }
+
+                $scope.activities = res.data
+                const end_arr = res.data.map((ac) => {
+                    return ac.end
+                })
+                const last_month = Math.max(...end_arr)
+                if(last_month <= 10) {
+                    $scope.months = Array.from(Array(10).keys())
+                    $scope.last_month = 10
+                } else {
+                    $scope.months = Array.from(Array(last_month).keys())
+                    $scope.last_month = last_month
+                }
+            }
+        })
+    }
+])
+
 app.controller('projectCtrl', ['$scope', '$http', '$rootScope', '$route', '$location', function($scope, $http, $rootScope, $route, $location) {
     $(function () {
         $("#datepicker-start").datepicker({ 

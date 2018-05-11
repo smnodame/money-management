@@ -2,7 +2,7 @@
     <div class="col-sm-4">
         <div class="page-header float-left">
             <div class="page-title">
-                <h1>โครงการ</h1>
+                <h1 ng-show="!show_edit_input">โครงการ {{ name || 'ไม่ถูกกำหนด' }} </h1>
             </div>
         </div>
         
@@ -12,41 +12,29 @@
 
 <div class="content mt-3">
     <div class="col-md-12">
-        <div class="form-group">
-            <label class="control-label mb-1">งบประมาณโครงการทั้งหมด</label>
-            <input type="number" class="form-control" ng-model="budget_all" disabled="true" />
-        </div>
-    </div>
-    <div class="col-md-12">
         <table class="table table-bordered" style="background-color: white">
             <thead>
                 <tr>
-                    <th>รายการ</th>
-                    <th style="width: 40px; text-align: center">1</th>
-                    <th style="width: 40px; text-align: center">2</th>
-                    <th style="width: 40px; text-align: center">3</th>
-                    <th style="width: 40px; text-align: center">4</th>
-                    <th style="width: 40px; text-align: center">5</th>
-                    <th style="width: 40px; text-align: center">6</th>
-                    <th style="width: 40px; text-align: center">7</th>
-                    <th style="width: 40px; text-align: center">8</th>
-                    <th style="width: 40px; text-align: center"> 9</th>
-                    <th style="width: 40px; text-align: center">10</th>
+                    <th rowspan="2" style="text-align: center; padding: 24px">กิจกรรม</th>
+                    <th colspan="{{ last_month }}" style="text-align: center;">
+                        เดือนที่
+                    </th>
+                </tr>
+                <tr>
+                    <th style="width: 40px; text-align: center" ng-repeat="month in months track by $index">
+                        {{ month + 1 }}
+                    </th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>1 fsad fsdfa afasdfasfsadf afasdfa </td>
-                    <td style="text-align: center"><i class="fa fa-check"></i></td>
-                    <td style="text-align: center">1</td>
-                    <td style="text-align: center">1</td>
-                    <td style="text-align: center">0</td>
-                    <td style="text-align: center">1</td>
-                    <td style="text-align: center">1</td>
-                    <td style="text-align: center">0</td>
-                    <td style="text-align: center">1</td>
-                    <td style="text-align: center">1</td>
-                    <td style="text-align: center">0</td>
+                <tr ng-repeat="activity in activities track by $index">
+                    <td>{{ activity.name }}</td>
+                    <td style="text-align: center" ng-repeat="month in months track by $index">
+                        <i class="fa fa-check" ng-if="month + 1 >=  activity.start && month + 1 <=  activity.end"></i>
+                    </td>
+                </tr>
+                <tr ng-if="activities.length == 0">
+                    <td colspan="11" style="text-align: center;">ยังไม่มีข้อมูล</td>
                 </tr>
             </tbody>
         </table>

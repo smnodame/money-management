@@ -6,12 +6,12 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Sufee Admin - HTML5 Admin Template</title>
-    <meta name="description" content="Sufee Admin - HTML5 Admin Template">
+    <title>เว็บบันทึกงบประมาณโครงการ</title>
+    <meta name="description" content="เว็บบันทึกงบประมาณโครงการ">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="apple-touch-icon" href="apple-icon.png">
-    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="apple-touch-icon" href="static/images/icon.png">
+    <link rel="shortcut icon" href="static/images/icon.png">
 
     <link rel="stylesheet" href="static/assets/css/normalize.css">
     <link rel="stylesheet" href="static/assets/css/bootstrap.min.css">
@@ -44,7 +44,7 @@
 
     <!-- Left Panel -->
 
-    <aside id="left-panel" class="left-panel">
+    <aside id="left-panel" class="left-panel" ng-controller="sidebarCtrl">
         <nav class="navbar navbar-expand-sm navbar-default">
 
             <div class="navbar-header">
@@ -59,13 +59,13 @@
                 <ul class="nav navbar-nav">
                     <h3 class="menu-title">เมนู</h3><!-- /.menu-title -->
                     <li class="menu-item-has-children dropdown">
-                        <a  class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-laptop"></i>หน้าเเรก</a>
+                        <a  class="dropdown-toggle" style="cursor: pointer;" data-toggle="dropdown" ng-click="navigate_home()" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-home"></i>หน้าเเรก</a>
                     </li>
                     <li class="menu-item-has-children dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-laptop"></i>โครงการ</a>
+                        <a class="dropdown-toggle" style="cursor: pointer;" data-toggle="dropdown" ng-click="navigate_project()" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-info"></i>โครงการ</a>
                     </li>
                     <li class="menu-item-has-children dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-table"></i>สรุปผล</a>
+                        <a class="dropdown-toggle" style="cursor: pointer;" data-toggle="dropdown" ng-click="navigate_summary()" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-table"></i>สรุปผล</a>
                     </li>
                 </ul>
             </div><!-- /.navbar-collapse -->

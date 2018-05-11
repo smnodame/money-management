@@ -102,6 +102,7 @@
                         <th scope="col">ชื่อ</th>
                         <th scope="col">อัตรา / เดือน</th>
                         <th scope="col">จำนวน (บาท)</th>
+                        <th scope="col">ร้อยละต่องบประมาณทั้งหมด</th>
                         <th scope="col">action</th>
                     </tr>
                 </thead>
@@ -111,7 +112,8 @@
                         <td>{{ staff.position }}</td>
                         <td>{{ staff.fullname }}</td>
                         <td>{{ staff.salary  }}</td>
-                        <td>{{   staff.salary * last_month }}</td>
+                        <td>{{  staff.salary * last_month }}</td>
+                        <td>{{  ((staff.salary * last_month) * 100 / budget_all ).toFixed(2) }}</td>
                         <td>
                             <button type="button" class="btn btn-info" ng-click="open_updating_staff($index)"  data-toggle="modal" data-target="#staff">เเก้ไข</button>
                             <button type="button" class="btn btn-warning" ng-click="del_staff(staff.key)" >ลบ</button>
@@ -125,7 +127,7 @@
                         <td></td>
                         <td>{{ all_salary }}</td>
                         <td>{{ s_all = all_salary * last_month }}</td>
-                        <td></td>
+                        <td>{{ (budget_all / s_all).toFixed(2) }}</td>
                     </tr>
                 <tfoot>
                 </table>
