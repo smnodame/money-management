@@ -25,13 +25,16 @@ app.config(function($routeProvider) {
 app.controller('summaryCtrl', [
     '$scope', '$http', function ($scope, $http) {
         $scope.budget_all = 1000000
+        $scope.activity_select_all = true
+
         $http.get('/activities')
         .then(function(res) {
             if(res.data) {
                 const data = Object.keys(res.data).map((key) => {
                     return {
                         ...res.data[key],
-                        key: key
+                        key: key,
+                        selected: true
                     }
                 })
                 res.data = data
@@ -57,12 +60,17 @@ app.controller('summaryCtrl', [
                 $scope.used_disburse = disburse_arr
                 $scope.percent = ( disburse_arr / budget_arr ) * 100
                 $scope.last_month = Math.max(...end_arr)
+
+                render_chart()
+
                 return res
             }
             $scope.used_budget = 0
             $scope.used_disburse = 0
             $scope.percent = 0
             $scope.last_month = 0
+
+            
             return res
         }).then(() => {
             $http.get('/staff').then((res) => {
@@ -70,7 +78,8 @@ app.controller('summaryCtrl', [
                     const data = Object.keys(res.data).map((key) => {
                         return {
                             ...res.data[key],
-                            key: key
+                            key: key,
+                            selected: true
                         }
                     })
                     res.data = data
@@ -87,6 +96,98 @@ app.controller('summaryCtrl', [
                 $scope.all_salary = 0
             })
         })
+
+        $scope.on_change_activity_select_all = () => {
+            if($scope.activity_select_all) {
+                $scope.activities.forEach((value, key) => {
+                    value.selected = true
+                })
+            } else {
+                $scope.activities.forEach((value, key) => {
+                    value.selected = false
+                })
+            }
+
+            $scope.on_selected_activity_changed()
+        }
+
+        $scope.on_selected_activity_changed = () => {
+            var chart = $('#container').highcharts();
+            const activity_selected = filter_activity_selected()
+            
+            if($scope.activities.length == activity_selected.length) {
+                $scope.activity_select_all = true
+            } else {
+                $scope.activity_select_all = false
+            }
+
+            chart.series[0].setData(activity_selected)
+        }
+
+        const filter_activity_selected = () => {
+            return $scope.activities.filter((activity) => {
+                return activity.selected
+            }).map((activity) => {
+                return {
+                    name: activity.name,
+                    y: activity.budget
+                }
+            })
+        }
+
+        const render_chart = () => {
+            const activities = filter_activity_selected()
+            // Radialize the colors
+            Highcharts.setOptions({
+                colors: Highcharts.map(Highcharts.getOptions().colors, function (color) {
+                    return {
+                        radialGradient: {
+                            cx: 0.5,
+                            cy: 0.3,
+                            r: 0.7
+                        },
+                        stops: [
+                            [0, color],
+                            [1, Highcharts.Color(color).brighten(-0.3).get('rgb')] // darken
+                        ]
+                    };
+                })
+            });
+
+            // Build the chart
+            Highcharts.chart('container', {
+                chart: {
+                    plotBackgrเเรกoundColor: null,
+                    plotBorderWidth: null,
+                    plotShadow: false,
+                    type: 'pie'
+                },
+                title: {
+                    text: 'สัดส่วนค่าใช้จ่ายกิจกรรม'
+                },
+                tooltip: {
+                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: true,
+                            format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                            style: {
+                                color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                            },
+                            connectorColor: 'silver'
+                        }
+                    }
+                },
+                series: [{
+                    name: 'Share',
+                    data: activities
+                }]
+            });
+        }
     }
 ])
 

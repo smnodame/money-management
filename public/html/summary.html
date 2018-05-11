@@ -16,38 +16,40 @@
         </div>
         <div class="card-body">
             <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">กิจกรรม</th>
-                    <th scope="col">เดือน</th>
-                    <th scope="col">งบประมาณต่อกิจกรรม/บาท</th>
-                    <th scope="col">เบิกจ่าย</th>
-                    <th scope="col">ร้อยละการเบิกจ่าย (ระบบคำนวณเป็น %)</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="activity in activities track by $index" >
-                    <th scope="row">{{ $index + 1 }} </th>
-                    <td>{{ activity.name }}</td>
-                    <td>กิจกรรมเดือน {{ activity.start }} - {{ activity.end }}</td>
-                    <td>{{ activity.budget }}</td>
-                    <td>{{ activity.disburse }}</td>
-                    <td>{{ (activity.disburse * 100 ) / activity.budget  }}</td>
-                </tr>
-            
-            </tbody>
-            <tfoot>
-                <tr>
-                    <th scope="row">รวม</th>
-                    <td></td>
-                    <td>{{ last_month }}</td>
-                    <td>{{ a_all = used_budget }}</td>
-                    <td>{{ used_disburse }}</td>
-                    <td>{{ percent.toFixed(2) }}</td>
-                </tr>
-            <tfoot>
+                <thead>
+                    <tr>
+                        <th scope="col"> <input type="checkbox" ng-model="activity_select_all" ng-change="on_change_activity_select_all()"> </th>
+                        <th scope="col">กิจกรรม</th>
+                        <th scope="col">เดือน</th>
+                        <th scope="col">งบประมาณต่อกิจกรรม/บาท</th>
+                        <th scope="col">เบิกจ่าย</th>
+                        <th scope="col">ร้อยละการเบิกจ่าย (ระบบคำนวณเป็น %)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="activity in activities track by $index" >
+                        <th scope="row"> <input type="checkbox" ng-change="on_selected_activity_changed()" ng-model="activity.selected"> </th>
+                        <td>{{ activity.name }}</td>
+                        <td>กิจกรรมเดือน {{ activity.start }} - {{ activity.end }}</td>
+                        <td>{{ activity.budget }}</td>
+                        <td>{{ activity.disburse }}</td>
+                        <td>{{ (activity.disburse * 100 ) / activity.budget  }}</td>
+                    </tr>
+                
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th scope="row">รวม</th>
+                        <td></td>
+                        <td>{{ last_month }}</td>
+                        <td>{{ a_all = used_budget }}</td>
+                        <td>{{ used_disburse }}</td>
+                        <td>{{ percent.toFixed(2) }}</td>
+                    </tr>
+                <tfoot>
             </table>
+
+            <div id="container" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
         </div>
     </div>
 </div>
@@ -63,7 +65,7 @@
             <table class="table table-striped">
             <thead>
                 <tr>
-                    <th scope="col">#</th>
+                    <th scope="col"><input type="checkbox" name="vehicle" value="Bike" /></th>
                     <th scope="col">ตำเเหน่ง</th>
                     <th scope="col">ชื่อ</th>
                     <th scope="col">อัตรา / เดือน</th>
@@ -73,7 +75,7 @@
             </thead>
             <tbody>
                 <tr ng-repeat="staff in staffs track by $index">
-                    <th scope="row">{{ $index + 1 }}</th>
+                    <th scope="row"><input type="checkbox" name="vehicle" ng-model="staff.selected"/></th>
                     <td>{{ staff.position }}</td>
                     <td>{{ staff.fullname }}</td>
                     <td>{{ staff.salary  }}</td>
@@ -105,7 +107,7 @@
             <table class="table table-striped">
             <thead>
                 <tr>
-                    <th scope="col">#</th>
+                    <th scope="col"> <input type="checkbox" name="vehicle" value="Bike"> </th>
                     <th scope="col">รายการ</th>
                     <th scope="col">เปอเซ็น</th>
                     <th scope="col">จำนวนเงิน</th>
@@ -113,19 +115,19 @@
             </thead>
             <tbody>
                 <tr>
-                    <th scope="row">1</th>
+                    <th scope="row"> <input type="checkbox" name="vehicle" value="Bike"> </th>
                     <td>มหาวิทยาลัย</td>
                     <td>10</td>
                     <td>{{ u_vate = budget_all * 0.1 }}</td>
                 </tr>
                 <tr>
-                    <th scope="row">2</th>
+                    <th scope="row"> <input type="checkbox" name="vehicle" value="Bike"> </th>
                     <td>คณะ</td>
                     <td>2</td>
                     <td>{{ f_vate = budget_all * 0.02 }}</td>
                 </tr>
                 <tr>
-                <th scope="row">3</th>
+                <th scope="row"><input type="checkbox" name="vehicle" value="Bike"></th>
                     <td>ภาค</td>
                     <td>1</td>
                     <td>{{ d_vate = budget_all * 0.01 }}</td>
