@@ -1094,8 +1094,7 @@ body.open .navbar .navbar-brand.hidden {
     background: #ffffff;
     border-bottom: 0px; }
     .right-panel .page-header h1 {
-      font-size: 18px;
-      padding: 15px 0; }
+      font-size: 18px; }
     .right-panel .page-header .breadcrumb {
       margin: 0px;
       padding: 13.5px 0;

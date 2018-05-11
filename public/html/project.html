@@ -1,19 +1,25 @@
-<div class="breadcrumbs">
-    <div class="col-sm-8">
-        <div class="page-header float-left">
-                <h1 ng-show="!show_edit_input">โครงการ {{ name || 'ไม่ถูกกำหนด' }} </h1>
-                <div class="input-group" ng-show="show_edit_input" style="margin-top: 20px; margin-bottom: 20px;">
-                    <input type="text" class="form-control" placeholder="ขื่อโครงการ..." ng-model="name" />
-                    <span class="input-group-btn">
-                        <button class="btn btn-default" type="button" ng-click="update_name()">UPDATE</button>
-                    </span>
-                </div>   
+ <!-- Header-->
+ <header id="header" class="header">
+        
+    <div class="header-menu">
+
+        <div class="col-sm-8">
+            <div class="page-header float-left">
+                    <h1 ng-show="!show_edit_input">โครงการ {{ name || 'ไม่ถูกกำหนด' }} </h1>
+                    <div class="input-group" ng-show="show_edit_input" style="margin-top: 10px; margin-bottom: 10px;">
+                        <input type="text" class="form-control" placeholder="ขื่อโครงการ..." ng-model="name" />
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button" ng-click="update_name()">UPDATE</button>
+                        </span>
+                    </div>   
+            </div>
+        </div>
+        <div class=" page-header float-right">
+            <button style="margin-top: 10px;" ng-if="!show_edit_input" type="button" class="btn btn-warning" ng-click="edit_name()" >แก้ไข</button>
         </div>
     </div>
-    <div class=" page-header float-right">
-        <button style="margin-top: 15px;" ng-if="!show_edit_input" type="button" class="btn btn-warning" ng-click="edit_name()" >แก้ไข</button>
-    </div>
-</div>
+
+</header><!-- /header -->
 
 <div class="content mt-3">
     <div class="col-md-12" style="margin-bottom: 15px">
