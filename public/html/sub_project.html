@@ -1,0 +1,121 @@
+<div class="breadcrumbs">
+    <div class="col-sm-4">
+        <div class="page-header float-left">
+            <div class="page-title">
+                <h1>{{ name }}</h1>
+            </div>
+        </div>
+        
+    </div>
+    <div class="col-sm-8">
+        <div class="page-header float-right">
+            <button type="button" class="btn btn-info" style="margin-top: 20px;" data-toggle="modal" data-target="#myModal">เพิ่ม</button>
+        </div>
+    </div>
+</div>
+
+<div class="content mt-3">
+    <div class="col-md-12">
+        <div class="form-group">
+            <label class="control-label mb-1">งบประมาณทั้งหมด</label>
+            <input type="number" class="form-control" ng-model="budget" ng-disabled="true" />
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="form-group">
+            <label class="control-label mb-1">งบประมาณเหลือ</label>
+            <input type="number" class="form-control" ng-value="budget - sum_price" ng-disabled="true" />
+        </div>
+    </div>
+    
+
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <strong class="card-title">ค่าใช้จ่ายอื่นๆ</strong>
+            </div>
+            <div class="card-body">
+                <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <td scope="col">วันที่</td>
+                        <td scope="col">รายการ</td>
+                        <td scope="col">จำนวนเงิน</td>
+                        <td scope="col">หมายเหตุ</td>
+                        <td scope="col">action</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="activity in activities track by $index">
+                        <th scope="row">{{ $index + 1 }}</th>
+                        <td>{{ activity.date }}</td>
+                        <td>{{ activity.name }}</td>
+                        <td>{{ activity.price }}</td>
+                        <td>{{ activity.condition }}</td>
+                        <td><button type="button" class="btn btn-warning" ng-click="del_activity(activity.key)" >ลบ</button></td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th scope="row">รวม</th>
+                        <td></td>
+                        <td></td>
+                        <td>{{ sum_price }}</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                <tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div> <!-- .content -->
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">เพิ่มกิจกรรมย่อย</h4>
+            </div>
+            <div class="modal-body">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label mb-1">ชื่อกิจกรรมย่อย</label>
+                            <input type="text" class="form-control" ng-model="new_name" />
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label mb-1">ราคา</label>
+                            <input type="number" class="form-control" ng-model="new_price" />
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label mb-1">เวลาเริ่ม</label>
+                            <div id="datepicker" class="input-group date" data-date-format="mm-dd-yyyy">
+                                <input class="form-control" type="text" readonly ng-model="new_date"  />
+                                <span class="input-group-addon"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label mb-1">หมายเหตุ</label>
+                            <input type="text" class="form-control" ng-model="new_condition" />
+                        </div>
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" ng-click="add_activity()" data-dismiss="modal" ng-disabled="!validation()">เพิ่ม</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">ปิด</button>
+            </div>
+        </div>
+        
+    </div>
+</div>

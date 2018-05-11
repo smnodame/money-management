@@ -5,16 +5,25 @@ app.config(function($routeProvider) {
         templateUrl : "static/html/home.html",
         controller: 'homeCtrl'
     })
-    .when("/:id", {
+    .when("/project", {
         templateUrl : "static/html/project.html",
         controller: 'projectCtrl'
+    })
+    .when("/project/:id", {
+        templateUrl : "static/html/sub_project.html",
+        controller: 'subProjectCtrl'
     })
     .otherwise({redirectTo : '/'})
 }).run(() => {
  
 })
-
-app.controller('homeCtrl', ['$scope', '$http', '$rootScope', '$route', '$location', function($scope, $http, $rootScope, $route, $location) {
+app.controller('homeCtrl', [
+    '$scope',
+    function($scope) {
+        
+    }
+])
+app.controller('projectCtrl', ['$scope', '$http', '$rootScope', '$route', '$location', function($scope, $http, $rootScope, $route, $location) {
     $(function () {
         $("#datepicker-start").datepicker({ 
                 autoclose: true, 
@@ -28,7 +37,25 @@ app.controller('homeCtrl', ['$scope', '$http', '$rootScope', '$route', '$locatio
 
     })
     $scope.budget_all = 1000000
-    
+    $scope.name = ''
+    $scope.update_name = () => {
+        $scope.show_edit_input = false
+        $http.put('/info', {
+            name: $scope.name
+        })
+    }
+
+    $scope.edit_name = () => {
+        $scope.show_edit_input = true
+    }
+
+    $http.get('/info')
+    .then(function(res) {
+        if(res.data && res.data.name) {
+            $scope.name = res.data.name || ''            
+        }
+    })
+
     $http.get('/activities')
     .then(function(res) {
         if(res.data) {
@@ -251,11 +278,11 @@ app.controller('homeCtrl', ['$scope', '$http', '$rootScope', '$route', '$locatio
     }
 
     $scope.navigate = (key) => {
-        $location.path(key)
+        $location.path('project/'+key)
     }
 }])
 
-app.controller('projectCtrl', ['$scope', '$http', '$rootScope', '$routeParams', '$route', function($scope, $http, $rootScope, $routeParams, $route) {
+app.controller('subProjectCtrl', ['$scope', '$http', '$rootScope', '$routeParams', '$route', function($scope, $http, $rootScope, $routeParams, $route) {
     
     $(function () {
         $("#datepicker").datepicker({ 

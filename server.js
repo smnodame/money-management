@@ -119,6 +119,21 @@ app.delete('/activities/:id/:key', (req, res) => {
   res.json(res.body)
 })
 
+app.get('/info', (req, res) => {
+  const ref = db.ref("info")
+  ref.once("value", function(snapshot) {
+    res.json(snapshot.val())
+  }, function (errorObject) {
+    res.status(500).send()
+  });
+})
+
+app.put('/info', (req, res) => {
+  const infoRef = db.ref("info")
+  infoRef.update(req.body)
+  res.json(res.body)
+})
+
 app.listen(3000, () => {
   console.log('Start server at port 3000.')
 })

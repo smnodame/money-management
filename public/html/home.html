@@ -14,288 +14,45 @@
     <div class="col-md-12">
         <div class="form-group">
             <label class="control-label mb-1">งบประมาณโครงการทั้งหมด</label>
-            <input type="number" class="form-control" ng-model="budget_all"/>
+            <input type="number" class="form-control" ng-model="budget_all" disabled="true" />
         </div>
     </div>
     <div class="col-md-12">
-        <div class="form-group">
-            <label class="control-label mb-1">งบประมาณโครงการคงเหลือ</label>
-            <input type="number" class="form-control" ng-value="budget_all - a_all - s_all - u_all" ng-disabled="true"/>
-        </div>
+        <table class="table table-bordered" style="background-color: white">
+            <thead>
+                <tr>
+                    <th>รายการ</th>
+                    <th style="width: 40px; text-align: center">1</th>
+                    <th style="width: 40px; text-align: center">2</th>
+                    <th style="width: 40px; text-align: center">3</th>
+                    <th style="width: 40px; text-align: center">4</th>
+                    <th style="width: 40px; text-align: center">5</th>
+                    <th style="width: 40px; text-align: center">6</th>
+                    <th style="width: 40px; text-align: center">7</th>
+                    <th style="width: 40px; text-align: center">8</th>
+                    <th style="width: 40px; text-align: center"> 9</th>
+                    <th style="width: 40px; text-align: center">10</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1 fsad fsdfa afasdfasfsadf afasdfa </td>
+                    <td style="text-align: center"><i class="fa fa-check"></i></td>
+                    <td style="text-align: center">1</td>
+                    <td style="text-align: center">1</td>
+                    <td style="text-align: center">0</td>
+                    <td style="text-align: center">1</td>
+                    <td style="text-align: center">1</td>
+                    <td style="text-align: center">0</td>
+                    <td style="text-align: center">1</td>
+                    <td style="text-align: center">1</td>
+                    <td style="text-align: center">0</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
-    <div class="col-md-12">
-        <div class="card">
-            <div class="card-header">
-                <strong class="card-title">กิจกรรม</strong>
-                    <div class="float-right">
-                        <button type="button" class="btn btn-info" ng-click="open_adding_activity()"  data-toggle="modal" data-target="#myModal">เพิ่ม</button>
-                    </div>
-            </div>
-            <div class="card-body">
-                <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">กิจกรรม</th>
-                        <th scope="col">เดือน</th>
-                        <th scope="col">งบประมาณต่อกิจกรรม/บาท</th>
-                        <th scope="col">เบิกจ่าย</th>
-                        <th scope="col">ร้อยละการเบิกจ่าย (ระบบคำนวณเป็น %)</th>
-                        <th scope="col">action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="activity in activities track by $index" >
-                        <th scope="row">{{ $index + 1 }} </th>
-                        <td>{{ activity.name }}</td>
-                        <td>กิจกรรมเดือน {{ activity.start }} - {{ activity.end }}</td>
-                        <td>{{ activity.budget }}</td>
-                        <td>{{ activity.disburse }}</td>
-                        <td>{{ (activity.disburse * 100 ) / activity.budget  }}</td>
-                        <td>
-                            <button type="button" class="btn btn-success" ng-click="navigate(activity.key)">ดู</button>
-                            <button type="button" class="btn btn-info" ng-click="open_update_activity_modal($index)" data-toggle="modal" data-target="#myModal">เเก้ไข</button> 
-                            <button type="button" class="btn btn-warning" ng-click="del_activity(activity.key)">ลบ</button>
-                        </td>
-                    </tr>
-                
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <th scope="row">รวม</th>
-                        <td></td>
-                        <td>{{ last_month }}</td>
-                        <td>{{ a_all = used_budget }}</td>
-                        <td>{{ used_disburse }}</td>
-                        <td>{{ percent.toFixed(2) }}</td>
-                        <td>
-                        </td>
-                    </tr>
-                <tfoot>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-12">
-        <div class="card">
-            <div class="card-header">
-                <strong class="card-title">ค่าใช้จ่ายบุคลากร</strong>
-                <div class="float-right">
-                    <button type="button" class="btn btn-info" ng-click="open_adding_staff()"  data-toggle="modal" data-target="#staff">เพิ่ม</button>
-                </div>
-            </div>
-            <div class="card-body">
-                <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">ตำเเหน่ง</th>
-                        <th scope="col">ชื่อ</th>
-                        <th scope="col">อัตรา / เดือน</th>
-                        <th scope="col">จำนวน (บาท)</th>
-                        <th scope="col">action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="staff in staffs track by $index">
-                        <th scope="row">{{ $index + 1 }}</th>
-                        <td>{{ staff.position }}</td>
-                        <td>{{ staff.fullname }}</td>
-                        <td>{{ staff.salary  }}</td>
-                        <td>{{   staff.salary * last_month }}</td>
-                        <td>
-                            <button type="button" class="btn btn-info" ng-click="open_updating_staff($index)"  data-toggle="modal" data-target="#staff">เเก้ไข</button>
-                            <button type="button" class="btn btn-warning" ng-click="del_staff(staff.key)" >ลบ</button>
-                        </td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <th scope="row">รวม</th>
-                        <td></td>
-                        <td></td>
-                        <td>{{ all_salary }}</td>
-                        <td>{{ s_all = all_salary * last_month }}</td>
-                        <td></td>
-                    </tr>
-                <tfoot>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-12">
-        <div class="card">
-            <div class="card-header">
-                <strong class="card-title">ค่าใช้จ่ายมหาวิทยาลัย</strong>
-            </div>
-            <div class="card-body">
-                <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">รายการ</th>
-                        <th scope="col">เปอเซ็น</th>
-                        <th scope="col">จำนวนเงิน</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>มหาวิทยาลัย</td>
-                        <td>10</td>
-                        <td>{{ u_vate = budget_all * 0.1 }}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td>คณะ</td>
-                        <td>2</td>
-                        <td>{{ f_vate = budget_all * 0.02 }}</td>
-                    </tr>
-                    <tr>
-                    <th scope="row">3</th>
-                        <td>ภาค</td>
-                        <td>1</td>
-                        <td>{{ d_vate = budget_all * 0.01 }}</td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <th scope="row">รวม</th>
-                        <td></td>
-                        <td>13</td>
-                        <td>{{ u_all = u_vate + f_vate + d_vate }}</td>
-                    </tr>
-                <tfoot>
-                </table>
-            </div>
-        </div>
-    </div>
-
 </div> <!-- .content -->
 
 
-<!-- Modal -->
-<div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog">
-    
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 ng-if="!is_update_activity" class="modal-title">เพิ่มกิจกรรม</h4>
-                <h4 ng-if="is_update_activity" class="modal-title">เเก้ไขกิจกรรม</h4>
-            </div>
-            <div class="modal-body">
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label class="control-label mb-1">ชื่อโครงการ</label>
-                            <input type="text" class="form-control" ng-model="activity_name"/>
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label class="control-label mb-1">งบประมาณ</label>
-                            <input type="number" class="form-control" ng-model="activity_budget"/>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label class="control-label mb-1">เดือนที่เริ่ม</label>
-                            <!-- <div id="datepicker-start" class="input-group date" data-date-format="mm-dd-yyyy">
-                                    <input class="form-control" type="text" readonly  />
-                                    <span class="input-group-addon"></span>
-                                </div> -->
-                            <input type="number" class="form-control" ng-model="activity_start"/>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                            <div class="form-group">
-                                <label class="control-label mb-1">เดือนที่สิ้นสุด</label>
-                                <input type="number" class="form-control" ng-model="activity_end"/>
-                            </div>
-                        </div>
-                    <div class="col-md-4">
-                            <div class="form-group">
-                                <label class="control-label mb-1">รวม (เดือน)</label>
-                                <input type="number" class="form-control" value="4" disabled="true" ng-value="activity_end - activity_start + 1"/>
-                            </div>
-                        </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-success" ng-disabled="!add_validation()" data-dismiss="modal" ng-click="update_activity()" ng-if="is_update_activity">อัพเดท</button>
-                <button type="button" class="btn btn-success" ng-disabled="!add_validation()" data-dismiss="modal" ng-click="add_activity()" ng-if="!is_update_activity">เพิ่ม</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">ปิด</button>
-            </div>
-        </div>
-        
-    </div>
-</div>
 
 
-<!-- Modal -->
-<div class="modal fade" id="staff" role="dialog">
-        <div class="modal-dialog">
-        
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">เพิ่มบุคลากร</h4>
-                </div>
-                <div class="modal-body">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label class="control-label mb-1" >ชื่อ + นามสกุล</label>
-                                <input type="text" class="form-control" ng-model="staff_name" />
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label class="control-label mb-1">หน่วยงาน</label>
-                                <input type="text" class="form-control" ng-model="staff_department" />
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="sel1">ประเภท</label>
-                                <select class="form-control" style="font-size: 13px; height: 32px;" ng-model="staff_type" ng-change="type_change()">
-                                    <option>บุคลากรหลัก</option>
-                                    <option>บุคลากรสนันสนุน</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="sel1">ตำเเหน่ง</label>
-                                <select class="form-control" style="font-size: 13px; height: 32px;" ng-show="staff_position == 'หัวหน้าโครงการ' || staff_position == 'นักวิจัย'" ng-model="staff_position" ng-change="position_change()">
-                                    <option>หัวหน้าโครงการ</option>
-                                    <option>นักวิจัย</option>
-                                </select>
-                                <select class="form-control" style="font-size: 13px; height: 32px;" ng-show="staff_position == 'ผู้ช่วยนักวิจัย' || staff_position == 'เลขานุการ'" ng-model="staff_position" ng-change="position_change()">
-                                        <option>ผู้ช่วยนักวิจัย</option>
-                                        <option>เลขานุการ</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                                <div class="form-group">
-                                    <label class="control-label mb-1">เงินเดือนประจำตำเเหน่ง</label>
-                                    <input type="number" class="form-control" ng-model="staff_salary" />
-                                </div>
-                            </div>
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="comment">ทักษะ</label>
-                                <textarea class="form-control" style="    font-size: 14px;" rows="3" ng-model="staff_skill"></textarea>
-                            </div>
-                        </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-success" ng-disabled="!can_add_staff()" data-dismiss="modal" ng-click="add_staff()" ng-show="!is_update_staff">เพิ่ม</button>
-                    <button type="button" class="btn btn-success" ng-disabled="!can_add_staff()" data-dismiss="modal" ng-click="update_staff()" ng-show="is_update_staff">อัพเดท</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">ปิด</button>
-                </div>
-            </div>
-            
-        </div>
-    </div>
