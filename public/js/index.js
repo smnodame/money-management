@@ -26,6 +26,7 @@ app.controller('summaryCtrl', [
     '$scope', '$http', function ($scope, $http) {
         $scope.budget_all = 1000000
         $scope.activity_select_all = true
+        $scope.staff_select_all = true
 
         $http.get('/activities')
         .then(function(res) {
@@ -61,8 +62,6 @@ app.controller('summaryCtrl', [
                 $scope.percent = ( disburse_arr / budget_arr ) * 100
                 $scope.last_month = Math.max(...end_arr)
 
-                render_chart()
-
                 return res
             }
             $scope.used_budget = 0
@@ -94,6 +93,8 @@ app.controller('summaryCtrl', [
                     return res
                 }
                 $scope.all_salary = 0
+            }).then(() => {
+                render_chart()
             })
         })
 
@@ -111,6 +112,33 @@ app.controller('summaryCtrl', [
             $scope.on_selected_activity_changed()
         }
 
+        $scope.on_change_staff_select_all = () => {
+            if($scope.staff_select_all) {
+                $scope.staffs.forEach((value, key) => {
+                    value.selected = true
+                })
+            } else {
+                $scope.staffs.forEach((value, key) => {
+                    value.selected = false
+                })
+            }
+
+            $scope.on_selected_staff_changed()
+        }
+
+        $scope.on_selected_staff_changed = () => {
+            var chart = $('#container-staff').highcharts();
+            const staff_selected = filter_staff_selected()
+            
+            if($scope.staffs.length == staff_selected.length) {
+                $scope.staff_select_all = true
+            } else {
+                $scope.staff_select_all = false
+            }
+
+            chart.series[0].setData(staff_selected)
+        }
+
         $scope.on_selected_activity_changed = () => {
             var chart = $('#container').highcharts();
             const activity_selected = filter_activity_selected()
@@ -122,6 +150,17 @@ app.controller('summaryCtrl', [
             }
 
             chart.series[0].setData(activity_selected)
+        }
+
+        const filter_staff_selected = () => {
+            return $scope.staffs.filter((staff) => {
+                return staff.selected
+            }).map((staff) => {
+                return {
+                    name: staff.fullname,
+                    y: staff.salary
+                }
+            })
         }
 
         const filter_activity_selected = () => {
@@ -137,6 +176,7 @@ app.controller('summaryCtrl', [
 
         const render_chart = () => {
             const activities = filter_activity_selected()
+            const staffs = filter_staff_selected()
             // Radialize the colors
             Highcharts.setOptions({
                 colors: Highcharts.map(Highcharts.getOptions().colors, function (color) {
@@ -154,39 +194,43 @@ app.controller('summaryCtrl', [
                 })
             });
 
-            // Build the chart
-            Highcharts.chart('container', {
-                chart: {
-                    plotBackgrเเรกoundColor: null,
-                    plotBorderWidth: null,
-                    plotShadow: false,
-                    type: 'pie'
-                },
-                title: {
-                    text: 'สัดส่วนค่าใช้จ่ายกิจกรรม'
-                },
-                tooltip: {
-                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-                },
-                plotOptions: {
-                    pie: {
-                        allowPointSelect: true,
-                        cursor: 'pointer',
-                        dataLabels: {
-                            enabled: true,
-                            format: '<b>{point.name}</b>: {point.percentage:.1f} %',
-                            style: {
-                                color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
-                            },
-                            connectorColor: 'silver'
+            const get_options_graph = (title , data) => {
+                return {
+                    chart: {
+                        plotBackgrเเรกoundColor: null,
+                        plotBorderWidth: null,
+                        plotShadow: false,
+                        type: 'pie'
+                    },
+                    title: {
+                        text:  title
+                    },
+                    tooltip: {
+                        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                    },
+                    plotOptions: {
+                        pie: {
+                            allowPointSelect: true,
+                            cursor: 'pointer',
+                            dataLabels: {
+                                enabled: true,
+                                format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                                style: {
+                                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                                },
+                                connectorColor: 'silver'
+                            }
                         }
-                    }
-                },
-                series: [{
-                    name: 'Share',
-                    data: activities
-                }]
-            });
+                    },
+                    series: [{
+                        name: 'Share',
+                        data:  data
+                    }]
+                }
+            }
+
+            Highcharts.chart('container', get_options_graph('สัดส่วนค่าใช้จ่ายกิจกรรม', activities))
+            Highcharts.chart('container-staff', get_options_graph('สัดส่วนค่าใช้จ่ายบุคลากร', staffs))
         }
     }
 ])

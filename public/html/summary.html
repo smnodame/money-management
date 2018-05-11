@@ -49,7 +49,7 @@
                 <tfoot>
             </table>
 
-            <div id="container" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
+            <div id="container" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto; margin-top: 40px"></div>
         </div>
     </div>
 </div>
@@ -65,7 +65,7 @@
             <table class="table table-striped">
             <thead>
                 <tr>
-                    <th scope="col"><input type="checkbox" name="vehicle" value="Bike" /></th>
+                    <th scope="col"><input type="checkbox" ng-model="staff_select_all" ng-change="on_change_staff_select_all()"/></th>
                     <th scope="col">ตำเเหน่ง</th>
                     <th scope="col">ชื่อ</th>
                     <th scope="col">อัตรา / เดือน</th>
@@ -75,7 +75,7 @@
             </thead>
             <tbody>
                 <tr ng-repeat="staff in staffs track by $index">
-                    <th scope="row"><input type="checkbox" name="vehicle" ng-model="staff.selected"/></th>
+                    <th scope="row"><input type="checkbox" ng-change="on_selected_staff_changed()" ng-model="staff.selected"/></th>
                     <td>{{ staff.position }}</td>
                     <td>{{ staff.fullname }}</td>
                     <td>{{ staff.salary  }}</td>
@@ -94,7 +94,11 @@
                 </tr>
             <tfoot>
             </table>
+
+            <div id="container-staff" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto; margin-top: 40px"></div>
+
         </div>
+        
     </div>
 </div>
 
