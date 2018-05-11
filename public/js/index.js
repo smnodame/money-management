@@ -22,15 +22,19 @@ app.config(function($routeProvider) {
 
 app.run(function($rootScope) { 
     $rootScope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams) {
-      if (fromState.name === "") { 
+        
         // The initial transition comes from "root", which uses the empty string as a name.
         alert("initial state: " + toState.name);
-      }
+        
     });
-  });
-
+});
+var round = 0
 app.controller('summaryCtrl', [
     '$scope', '$http', function ($scope, $http) {
+        if(round != 0) {
+            location.reload()
+        }
+        round = 1
         $http.get('/info')
         .then(function(res) {
             if(res.data && res.data.name) {
