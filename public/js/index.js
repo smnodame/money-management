@@ -13,15 +13,25 @@ app.config(function($routeProvider) {
         templateUrl : "static/html/sub_project.html",
         controller: 'subProjectCtrl'
     })
+    .when("/summary", {
+        templateUrl : "static/html/summary.html",
+        controller: 'summaryCtrl'
+    })
     .otherwise({redirectTo : '/'})
 }).run(() => {
  
 })
 
+app.controller('summaryCtrl', [
+    '$scope', '$http', function ($scope, $http) {
+        
+    }
+])
+
 app.controller('sidebarCtrl', [
     '$scope', '$location',
     function($scope, $location) {
-        
+
         $scope.navigate_home = () => {
             $location.path('')
         }

@@ -1,0 +1,46 @@
+ <!-- Header-->
+ <header id="header" class="header">
+        <div class="header-menu">
+            <div class="col-sm-8">
+                <div class="page-header float-left">
+                        <h1> สรุปผลโครงการ </h1>
+                </div>
+            </div>
+        </div>
+    </header><!-- /header -->
+    
+    <div class="content mt-3">
+        <div class="col-md-12">
+            <table class="table table-bordered" style="background-color: white">
+                <thead>
+                    <tr>
+                        <th rowspan="2" style="text-align: center; padding: 24px">กิจกรรม</th>
+                        <th colspan="{{ last_month }}" style="text-align: center;">
+                            เดือนที่
+                        </th>
+                    </tr>
+                    <tr>
+                        <th style="width: 40px; text-align: center" ng-repeat="month in months track by $index">
+                            {{ month + 1 }}
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="activity in activities track by $index">
+                        <td>{{ activity.name }}</td>
+                        <td style="text-align: center" ng-repeat="month in months track by $index">
+                            <i class="fa fa-check" ng-if="month + 1 >=  activity.start && month + 1 <=  activity.end"></i>
+                        </td>
+                    </tr>
+                    <tr ng-if="activities.length == 0">
+                        <td colspan="11" style="text-align: center;">ยังไม่มีข้อมูล</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div> <!-- .content -->
+    
+    
+    
+    
+    
