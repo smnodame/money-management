@@ -114,9 +114,12 @@ app.post('/:key/activities/:id', (req, res) => {
 })
 
 app.delete('/:key/activities/:id/:sub', (req, res) => {
-  const ref = db.ref("projects/" + req.params.key + "/activities/"+req.params.id+"/activities")
-  const activityRef = ref.child(req.params.sub)
+  const ref = db.ref("projects/" + req.params.key + "/activities/"+req.params.id)
+  const activityRef = ref.child('activities').child(req.params.sub)
   activityRef.remove()
+  ref.update({
+    disburse: req.body.sum_price
+  })
   res.json(res.body)
 })
 
@@ -156,17 +159,16 @@ app.delete('/:key/staff/:id', (req, res) => {
 app.get('/:key/info', (req, res) => {
   const ref = db.ref("projects/" + req.params.key)
   ref.once("value", function(snapshot) {
-    res.json({
-      name: snapshot.val()['name']
-    })
+    res.json(snapshot.val())
   }, function (errorObject) {
     res.status(500).send()
   });
 })
 
 app.put('/:key/info', (req, res) => {
-  const infoRef = db.ref("projects/" + req.params.key + "/name")
-  infoRef.setValue(req.body['name'])
+  const ref = db.ref("projects/" + req.params.key)
+  const infoRef = ref.child('name')
+  infoRef.set(req.body['name'])
   res.json(res.body)
 })
 

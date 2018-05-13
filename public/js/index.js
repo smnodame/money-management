@@ -2,15 +2,15 @@ var app = angular.module("app", ["ngRoute"])
 app.config(function($routeProvider) {
     $routeProvider
     
-    .when("/project", {
+    .when("/:key/project", {
         templateUrl : "static/html/project.html",
         controller: 'projectCtrl'
     })
-    .when("/project/:id", {
+    .when("/:key/project/:id", {
         templateUrl : "static/html/sub_project.html",
         controller: 'subProjectCtrl'
     })
-    .when("/summary", {
+    .when("/:key/summary", {
         templateUrl : "static/html/summary.html",
         controller: 'summaryCtrl'
     })
@@ -106,18 +106,19 @@ app.controller('mainCtrl', [
 ])
 
 app.controller('summaryCtrl', [
-    '$scope', '$http', function ($scope, $http) {
+    '$scope', '$http', '$routeParams', function ($scope, $http, $routeParams) {
         if(round != 0) {
             location.reload()
         }
         round = 1
-        $http.get('/info')
+        $http.get('/' + $routeParams.key + '/info')
         .then(function(res) {
             if(res.data && res.data.name) {
-                $scope.name = res.data.name || ''            
+                $scope.name = res.data.name || ''  
+                $scope.budget_all = res.data.budget          
             }
         })
-        $scope.budget_all = 1000000
+        
         $scope.activity_select_all = true
         $scope.staff_select_all = true
         $scope.organize_all_selected = true
@@ -172,7 +173,7 @@ app.controller('summaryCtrl', [
             rereder_type_chart()
         }
 
-        $http.get('/activities')
+        $http.get('/' + $routeParams.key + '/activities')
         .then(function(res) {
             if(res.data) {
                 const data = Object.keys(res.data).map((key) => {
@@ -214,7 +215,7 @@ app.controller('summaryCtrl', [
             $scope.last_month = 0
             return res
         }).then(() => {
-            $http.get('/staff').then((res) => {
+            $http.get('/' + $routeParams.key + '/staff').then((res) => {
                 if(res.data) {
                     const data = Object.keys(res.data).map((key) => {
                         return {
@@ -424,21 +425,21 @@ app.controller('summaryCtrl', [
 ])
 
 app.controller('sidebarCtrl', [
-    '$scope', '$location', '$route', '$rootScope',
-    function($scope, $location, $route, $rootScope) {
+    '$scope', '$location', '$route', '$rootScope', '$routeParams',
+    function($scope, $location, $route, $rootScope, $routeParams) {
 
         $scope.navigate_home = () => {
-            $location.path('')
+            $location.path('/' + $routeParams.key)
             $route.reload()
         }
 
         $scope.navigate_project = () => {
-            $location.path('/project')
+            $location.path('/' + $routeParams.key + '/project')
             $route.reload()
         }
 
         $scope.navigate_summary = () => {
-            $location.path('/summary')
+            $location.path('/' + $routeParams.key + '/summary')
             $route.reload()
         }
     }
@@ -489,7 +490,7 @@ app.controller('homeCtrl', [
     }
 ])
 
-app.controller('projectCtrl', ['$scope', '$http', '$rootScope', '$route', '$location', function($scope, $http, $rootScope, $route, $location) {
+app.controller('projectCtrl', ['$scope', '$http', '$rootScope', '$route', '$location', '$routeParams', function($scope, $http, $rootScope, $route, $location, $routeParams) {
     $(function () {
         $("#datepicker-start").datepicker({ 
                 autoclose: true, 
@@ -502,11 +503,10 @@ app.controller('projectCtrl', ['$scope', '$http', '$rootScope', '$route', '$loca
         }).datepicker('update', new Date())
 
     })
-    $scope.budget_all = 1000000
     $scope.name = ''
     $scope.update_name = () => {
         $scope.show_edit_input = false
-        $http.put('/info', {
+        $http.put('/' + $routeParams.key + '/info', {
             name: $scope.name
         })
     }
@@ -515,14 +515,15 @@ app.controller('projectCtrl', ['$scope', '$http', '$rootScope', '$route', '$loca
         $scope.show_edit_input = true
     }
 
-    $http.get('/info')
+    $http.get('/' + $routeParams.key + '/info')
     .then(function(res) {
         if(res.data && res.data.name) {
-            $scope.name = res.data.name || ''            
+            $scope.name = res.data.name || ''   
+            $scope.budget_all = res.data.budget         
         }
     })
 
-    $http.get('/activities')
+    $http.get('/' + $routeParams.key + '/activities')
     .then(function(res) {
         if(res.data) {
             const data = Object.keys(res.data).map((key) => {
@@ -562,7 +563,7 @@ app.controller('projectCtrl', ['$scope', '$http', '$rootScope', '$route', '$loca
         $scope.last_month = 0
         return res
     }).then(() => {
-        $http.get('/staff').then((res) => {
+        $http.get('/' + $routeParams.key + '/staff').then((res) => {
             if(res.data) {
                 const data = Object.keys(res.data).map((key) => {
                     return {
@@ -611,7 +612,7 @@ app.controller('projectCtrl', ['$scope', '$http', '$rootScope', '$route', '$loca
     }
 
     $scope.update_staff = () => {
-        $http.put('/staff/' + $scope.staff_key, {
+        $http.put('/' + $routeParams.key + '/staff/' + $scope.staff_key, {
             fullname: $scope.staff_name,
             department: $scope.staff_department,
             type: $scope.staff_type,
@@ -647,7 +648,7 @@ app.controller('projectCtrl', ['$scope', '$http', '$rootScope', '$route', '$loca
     }
 
     $scope.update_activity = () => {
-        $http.put('/activities/' + $scope.activity_key , {
+        $http.put('/' + $routeParams.key + '/activities/' + $scope.activity_key , {
             name: $scope.activity_name,
             budget: parseInt($scope.activity_budget),
             start: parseInt($scope.activity_start),
@@ -659,7 +660,7 @@ app.controller('projectCtrl', ['$scope', '$http', '$rootScope', '$route', '$loca
     
     $scope.del_activity = (key) => {
         
-        $http.delete('/activities/'+key).then(function(res) {
+        $http.delete('/' + $routeParams.key + '/activities/'+key).then(function(res) {
             $route.reload()
             $('#staff').hide();
             $('#myModal').hide()
@@ -667,7 +668,7 @@ app.controller('projectCtrl', ['$scope', '$http', '$rootScope', '$route', '$loca
     }
 
     $scope.add_activity = () => {
-        $http.post('/activities', {
+        $http.post('/' + $routeParams.key + '/activities', {
             name: $scope.activity_name,
             budget: parseInt($scope.activity_budget),
             start: parseInt($scope.activity_start),
@@ -720,7 +721,7 @@ app.controller('projectCtrl', ['$scope', '$http', '$rootScope', '$route', '$loca
     }
 
     $scope.add_staff = () => {
-        $http.post('/staff', {
+        $http.post('/' + $routeParams.key + '/staff', {
             fullname: $scope.staff_name,
             department: $scope.staff_department,
             type: $scope.staff_type,
@@ -738,13 +739,13 @@ app.controller('projectCtrl', ['$scope', '$http', '$rootScope', '$route', '$loca
     }
 
     $scope.del_staff = (key) => {
-        $http.delete('/staff/'+key).then(() => {
+        $http.delete('/' + $routeParams.key + '/staff/'+key).then(() => {
             $route.reload()
         })
     }
 
     $scope.navigate = (key) => {
-        $location.path('project/'+key)
+        $location.path('/' + $routeParams.key + '/project/'+key)
     }
 }])
 
@@ -761,7 +762,7 @@ app.controller('subProjectCtrl', ['$scope', '$http', '$rootScope', '$routeParams
         return total + ac.price
     }
 
-    $http.get('/activities/'+ $routeParams.id )
+    $http.get('/' + $routeParams.key + '/activities/'+ $routeParams.id )
     .then(function(res) {
         $scope.budget = res.data.budget
         $scope.name = res.data.name
@@ -782,7 +783,7 @@ app.controller('subProjectCtrl', ['$scope', '$http', '$rootScope', '$routeParams
     })
 
     $scope.add_activity = () => {
-        $http.post('/activities/'+ $routeParams.id, {
+        $http.post('/' + $routeParams.key + '/activities/'+ $routeParams.id, {
             name: $scope.new_name,
             price: parseInt($scope.new_price),
             date: $scope.new_date,
@@ -799,7 +800,9 @@ app.controller('subProjectCtrl', ['$scope', '$http', '$rootScope', '$routeParams
     }
 
     $scope.del_activity = (key) => {
-        $http.delete('/activities/'+ $routeParams.id + '/' + key)
+        $http.delete('/' + $routeParams.key + '/activities/'+ $routeParams.id + '/' + key, {
+            sum_price: $scope.sum_price
+        })
         .then(function(res) {
             $route.reload()
         })
