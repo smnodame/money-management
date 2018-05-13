@@ -117,9 +117,6 @@ app.delete('/:key/activities/:id/:sub', (req, res) => {
   const ref = db.ref("projects/" + req.params.key + "/activities/"+req.params.id)
   const activityRef = ref.child('activities').child(req.params.sub)
   activityRef.remove()
-  ref.update({
-    disburse: req.body.sum_price
-  })
   res.json(res.body)
 })
 

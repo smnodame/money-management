@@ -54,15 +54,24 @@
                 <a class="navbar-brand" href="./" ><img src="static/images/naresuan.png" alt="Logo" style="max-width: 200px !important"></a>
                 <a class="navbar-brand hidden" href="./"><img src="static/images/logo2.png" alt="Logo"></a>
             </div>
-
             <div id="main-menu" class="main-menu collapse navbar-collapse">
                 <ul class="nav navbar-nav">
-                    <h3 class="menu-title">เมนู</h3><!-- /.menu-title -->
+                    <h3 class="menu-title">เมนูหลัก</h3><!-- /.menu-title -->
+                    <li class="menu-item-has-children dropdown">
+                        <a  class="dropdown-toggle" style="cursor: pointer;" data-toggle="dropdown" ng-click="navigate_main()" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-home"></i>โครงการทั้งหมด</a>
+                    </li>
+                    <li class="menu-item-has-children dropdown" style="    width: 176px;">
+                    </li>
+                </ul>
+            </div>
+            <div ng-if="!main" id="main-menu" class="main-menu collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <h3 class="menu-title">เมนูย่อย</h3><!-- /.menu-title -->
                     <li class="menu-item-has-children dropdown">
                         <a  class="dropdown-toggle" style="cursor: pointer;" data-toggle="dropdown" ng-click="navigate_home()" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-home"></i>หน้าเเรก</a>
                     </li>
                     <li class="menu-item-has-children dropdown">
-                        <a class="dropdown-toggle" style="cursor: pointer;" data-toggle="dropdown" ng-click="navigate_project()" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-info"></i>โครงการ</a>
+                        <a class="dropdown-toggle" style="cursor: pointer;" data-toggle="dropdown" ng-click="navigate_project()" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-info"></i>กิจกรรมทั้งหมด</a>
                     </li>
                     <li class="menu-item-has-children dropdown">
                         <a class="dropdown-toggle" style="cursor: pointer;" data-toggle="dropdown" ng-click="navigate_summary()" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-table"></i>สรุปผล</a>

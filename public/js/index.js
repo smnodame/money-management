@@ -430,18 +430,27 @@ app.controller('sidebarCtrl', [
 
         $scope.navigate_home = () => {
             $location.path('/' + $routeParams.key)
-            $route.reload()
         }
 
         $scope.navigate_project = () => {
             $location.path('/' + $routeParams.key + '/project')
-            $route.reload()
         }
 
         $scope.navigate_summary = () => {
             $location.path('/' + $routeParams.key + '/summary')
-            $route.reload()
         }
+
+        $scope.navigate_main = () => {
+            $location.path('/')
+        }
+        
+        $scope.$on('$routeChangeStart', function($event, next, current) { 
+            if($location['$$url'] == '/') {
+                $scope.main = true
+            } else {
+                $scope.main = false
+            }
+        })
     }
 ])
 
