@@ -523,11 +523,24 @@ app.controller('projectCtrl', ['$scope', '$http', '$rootScope', '$route', '$loca
         })
     }
 
+    $http.get('/' + $routeParams.key + '/university')
+    .then(function(res) {
+        if(res.data) {
+            $scope.u_percent_budget = res.data.u_percent_budget || 0.10
+            $scope.f_percent_budget = res.data.f_percent_budget || 0.02 
+            $scope.d_percent_budget = res.data.d_percent_budget || 0.01      
+        }
+    })
+
     $scope.update_university_budget = () => {
         $scope.u_percent_budget = $scope.u_percent_budget_clone / 100
         $scope.f_percent_budget = $scope.f_percent_budget_clone / 100
         $scope.d_percent_budget = $scope.d_percent_budget_clone / 100
-        console.log('==========')
+        $http.put('/' + $routeParams.key + '/university', {
+            u_percent_budget: $scope.u_percent_budget,
+            f_percent_budget: $scope.f_percent_budget,
+            d_percent_budget: $scope.d_percent_budget
+        })
     }
 
     $scope.validate_university_budget = () => {

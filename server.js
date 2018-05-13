@@ -169,6 +169,24 @@ app.put('/:key/info', (req, res) => {
   res.json(res.body)
 })
 
+//  ------------- university ---------------
+
+app.get('/:key/university', (req, res) => {
+  const ref = db.ref("projects/" + req.params.key + "/university")
+  ref.once("value", function(snapshot) {
+    res.json(snapshot.val())
+  }, function (errorObject) {
+    res.status(500).send()
+  });
+})
+
+app.put('/:key/university', (req, res) => {
+  const ref = db.ref("projects/" + req.params.key)
+  const uRef = ref.child('university')
+  uRef.set(req.body)
+  res.json(res.body)
+})
+
 app.listen(3000, () => {
   console.log('Start server at port 3000.')
 })
