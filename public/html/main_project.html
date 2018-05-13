@@ -1,0 +1,89 @@
+ <!-- Header-->
+ <header id="header" class="header">
+    
+<div class="header-menu">
+
+    <div class="col-sm-8">
+        <div class="page-header float-left" style="width: 100% !important;">
+                <h1>โครงการทั้งหมด</h1>
+        </div>
+    </div>
+</div>
+
+</header><!-- /header -->
+
+<div class="content mt-3">
+    <div class="col-md-12" style="margin-bottom: 15px">
+        
+    </div>
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <strong class="card-title">โครงการทั้งหมด</strong>
+                <div class="float-right">
+                    <button type="button" class="btn btn-info" ng-click="open_adding_project()"  data-toggle="modal" data-target="#myModal">เพิ่ม</button>
+                </div>
+            </div>
+            <div class="card-body">
+                <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">กิจกรรม</th>
+                        <th scope="col">งบประมาณทั้งหมด</th>
+                        <th scope="col">action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="project in projects track by $index" >
+                        <th scope="row">{{ $index + 1 }} </th>
+                        <td>{{ activity.name }}</td>
+                        <td>{{ activity.budget }}</td>
+                        <td>
+                            <button type="button" class="btn btn-success" ng-click="navigate(activity.key)">ดู</button>
+                            <button type="button" class="btn btn-info" ng-click="open_update_activity_modal($index)" data-toggle="modal" data-target="#myModal">เเก้ไข</button> 
+                            <button type="button" class="btn btn-warning" ng-click="del_activity(activity.key)">ลบ</button>
+                        </td>
+                    </tr>
+                    <tr ng-if="projects.length == 0">
+                        <td colspan="4" style="text-align: center;">ยังไม่มีข้อมูล</td>
+                    </tr>
+                </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div> <!-- .content -->
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">เพิ่มโครงการ</h4>
+            </div>
+            <div class="modal-body">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label mb-1">ชื่อโครงการ</label>
+                            <input type="text" class="form-control" ng-model="name" />
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label mb-1">งบประมาณทั้งหมด</label>
+                            <input type="number" class="form-control" ng-model="budget" />
+                        </div>
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" ng-click="add_project()" data-dismiss="modal" ng-disabled="!validation()">เพิ่ม</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">ปิด</button>
+            </div>
+        </div>
+        
+    </div>
+</div>

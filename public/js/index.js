@@ -1,10 +1,7 @@
 var app = angular.module("app", ["ngRoute"])
 app.config(function($routeProvider) {
     $routeProvider
-    .when("/", {
-        templateUrl : "static/html/home.html",
-        controller: 'homeCtrl'
-    })
+    
     .when("/project", {
         templateUrl : "static/html/project.html",
         controller: 'projectCtrl'
@@ -17,18 +14,42 @@ app.config(function($routeProvider) {
         templateUrl : "static/html/summary.html",
         controller: 'summaryCtrl'
     })
+    .when("/", {
+        templateUrl : "static/html/main_project.html",
+        controller: 'mainCtrl'
+    })
+    .when("/:key", {
+        templateUrl : "static/html/home.html",
+        controller: 'homeCtrl'
+    })
     .otherwise({redirectTo : '/'})
 })
 
 app.run(function($rootScope) { 
     $rootScope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams) {
-        
-        // The initial transition comes from "root", which uses the empty string as a name.
-        alert("initial state: " + toState.name);
-        
+
     });
 });
 var round = 0
+app.controller('mainCtrl', [
+    '$scope', '$http', function ($scope, $http) {
+        $scope.projects = []
+
+        $scope.open_adding_project = () => {
+            $scope.name = ""
+            $scope.budget = ""
+        }
+
+        $scope.add_project = () => {
+
+        }
+
+        $scope.validation = () => {
+            return $scope.name && parseInt($scope.budget) >= 0
+        }
+    }   
+])
+
 app.controller('summaryCtrl', [
     '$scope', '$http', function ($scope, $http) {
         if(round != 0) {
