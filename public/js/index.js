@@ -770,7 +770,8 @@ app.controller('subProjectCtrl', ['$scope', '$http', '$rootScope', '$routeParams
     function getSum(total, ac) {
         return total + ac.price
     }
-
+    $scope.activities = []
+    $scope.sum_expect_price = 0
     $http.get('/' + $routeParams.key + '/activities/'+ $routeParams.id )
     .then(function(res) {
         $scope.budget = res.data.budget
@@ -796,6 +797,7 @@ app.controller('subProjectCtrl', ['$scope', '$http', '$rootScope', '$routeParams
             name: $scope.new_name,
             price: parseInt($scope.new_price),
             date: $scope.new_date,
+            expect_price: $scope.expect_price,
             condition: $scope.new_condition || '-',
             sum_price: $scope.sum_price + parseInt($scope.new_price)
         })
@@ -805,7 +807,13 @@ app.controller('subProjectCtrl', ['$scope', '$http', '$rootScope', '$routeParams
     }
 
     $scope.validation = () => {
-        return $scope.new_name && $scope.new_price && $scope.new_date
+        return $scope.new_name && ($scope.new_price >=0) && $scope.new_date && ($scope.expect_price >= 0)
+    }
+
+    $scope.get_sum_expect_price = () => {
+        return $scope.activities.reduce((n, o) => {
+            return n + (o.expect_price || 0)
+        }, 0)
     }
 
     $scope.del_activity = (key) => {

@@ -42,6 +42,7 @@
                         <th scope="col">#</th>
                         <td scope="col">วันที่</td>
                         <td scope="col">รายการ</td>
+                        <td scope="col">งบประมาณที่กำหนด</td>
                         <td scope="col">จำนวนเงิน</td>
                         <td scope="col">หมายเหตุ</td>
                         <td scope="col">action</td>
@@ -52,6 +53,7 @@
                         <th scope="row">{{ $index + 1 }}</th>
                         <td>{{ activity.date }}</td>
                         <td>{{ activity.name }}</td>
+                        <td>{{ activity.expect_price || 0 }}</td>
                         <td>{{ activity.price }}</td>
                         <td>{{ activity.condition }}</td>
                         <td><button type="button" class="btn btn-warning" ng-click="del_activity(activity.key)" >ลบ</button></td>
@@ -62,6 +64,7 @@
                         <th scope="row">รวม</th>
                         <td></td>
                         <td></td>
+                        <td>{{ get_sum_expect_price() }}</td>
                         <td>{{ sum_price }}</td>
                         <td></td>
                         <td></td>
@@ -88,6 +91,12 @@
                         <div class="form-group">
                             <label class="control-label mb-1">ชื่อกิจกรรมย่อย</label>
                             <input type="text" class="form-control" ng-model="new_name" />
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label mb-1">งบประมาณที่กำหนด</label>
+                            <input type="number" class="form-control" ng-model="expect_price" />
                         </div>
                     </div>
                     <div class="col-md-12">
