@@ -510,14 +510,37 @@ app.controller('projectCtrl', ['$scope', '$http', '$rootScope', '$route', '$loca
             autoclose: true, 
             todayHighlight: true
         }).datepicker('update', new Date())
-
     })
-    $scope.name = ''
+
+    $scope.u_percent_budget = 0.10
+    $scope.f_percent_budget = 0.02
+    $scope.d_percent_budget = 0.01
+
     $scope.update_name = () => {
         $scope.show_edit_input = false
         $http.put('/' + $routeParams.key + '/info', {
             name: $scope.name
         })
+    }
+
+    $scope.update_university_budget = () => {
+        $scope.u_percent_budget = $scope.u_percent_budget_clone / 100
+        $scope.f_percent_budget = $scope.f_percent_budget_clone / 100
+        $scope.d_percent_budget = $scope.d_percent_budget_clone / 100
+        console.log('==========')
+    }
+
+    $scope.validate_university_budget = () => {
+        return $scope.u_percent_budget_clone >= 0 && $scope.u_percent_budget_clone <= 100 
+        && $scope.f_percent_budget_clone >= 0 && $scope.f_percent_budget_clone <= 100 && 
+        $scope.d_percent_budget_clone >= 0 && $scope.d_percent_budget_clone <= 100 
+        && ($scope.f_percent_budget_clone + $scope.u_percent_budget_clone + $scope.d_percent_budget_clone) <= 100
+    }
+
+    $scope.open_university_budget_modal = () => {
+        $scope.u_percent_budget_clone = $scope.u_percent_budget * 100
+        $scope.f_percent_budget_clone = $scope.f_percent_budget * 100
+        $scope.d_percent_budget_clone = $scope.d_percent_budget * 100
     }
 
     $scope.edit_name = () => {
