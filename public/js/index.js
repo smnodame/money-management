@@ -111,12 +111,90 @@ app.controller('summaryCtrl', [
             location.reload()
         }
         round = 1
+        $scope.budget_all = 1000000
+
         $http.get('/' + $routeParams.key + '/info')
         .then(function(res) {
             if(res.data && res.data.name) {
                 $scope.name = res.data.name || ''  
                 $scope.budget_all = res.data.budget          
             }
+
+            $http.get('/' + $routeParams.key + '/activities')
+            .then(function(res) {
+                if(res.data) {
+                    const data = Object.keys(res.data).map((key) => {
+                        return {
+                            ...res.data[key],
+                            key: key,
+                            selected: true
+                        }
+                    })
+                    res.data = data
+            
+                    $scope.activities = res.data
+            
+                    const end_arr = res.data.map((ac) => {
+                        return ac.end
+                    })
+            
+                    function getSumBudget(total, ac) {
+                        return total + ac.budget
+                    }
+            
+                    function getSumDisburse(total, ac) {
+                        return total + ac.disburse
+                    }
+            
+                    const budget_arr = res.data.reduce(getSumBudget, 0)
+                    const disburse_arr = res.data.reduce(getSumDisburse, 0)
+            
+                    $scope.used_budget = budget_arr
+                    $scope.used_disburse = disburse_arr
+                    $scope.percent = ( disburse_arr / budget_arr ) * 100
+                    $scope.last_month = Math.max(...end_arr)
+    
+                    return res
+                }
+                $scope.used_budget = 0
+                $scope.used_disburse = 0
+                $scope.percent = 0
+                $scope.last_month = 0
+                return res
+            }).then(() => {
+                $http.get('/' + $routeParams.key + '/staff').then((res) => {
+                    if(res.data) {
+                        const data = Object.keys(res.data).map((key) => {
+                            return {
+                                ...res.data[key],
+                                key: key,
+                                selected: true
+                            }
+                        })
+                        res.data = data
+            
+                        $scope.staffs = res.data
+                
+                        function getSumSalary(total, ac) {
+                            return total + ac.salary
+                        }
+                
+                        $scope.all_salary = $scope.staffs.reduce(getSumSalary, 0)
+                        return res
+                    }
+                    $scope.all_salary = 0
+                }).then(() => {
+                    $http.get('/' + $routeParams.key + '/university')
+                    .then(function(res) {
+                        $scope.u_percent_budget = res.data.u_percent_budget || 0.10
+                        $scope.f_percent_budget = res.data.f_percent_budget || 0.02 
+                        $scope.d_percent_budget = res.data.d_percent_budget || 0.01     
+                        return res
+                    }).then(() => {
+                        render_chart()                    
+                    })
+                })
+            })
         })
         
         $scope.activity_select_all = true
@@ -148,19 +226,19 @@ app.controller('summaryCtrl', [
             if($scope.university_selected) {
                 organize_data.push({
                     name: 'มหาวิทยาลัย',
-                    y: $scope.u_vate
+                    y: $scope.budget_all * $scope.u_percent_budget
                 })
             }
             if($scope.factory_selected) {
                 organize_data.push({
                     name: 'คณะ',
-                    y: $scope.f_vate
+                    y: $scope.budget_all * $scope.f_percent_budget
                 })
             }
             if($scope.department_selected) {
                 organize_data.push({
                     name: 'ภาค',
-                    y: $scope.d_vate
+                    y: $scope.budget_all * $scope.d_percent_budget
                 })
             }
             return organize_data
@@ -172,74 +250,6 @@ app.controller('summaryCtrl', [
             chart.series[0].setData(organize_selected)
             rereder_type_chart()
         }
-
-        $http.get('/' + $routeParams.key + '/activities')
-        .then(function(res) {
-            if(res.data) {
-                const data = Object.keys(res.data).map((key) => {
-                    return {
-                        ...res.data[key],
-                        key: key,
-                        selected: true
-                    }
-                })
-                res.data = data
-        
-                $scope.activities = res.data
-        
-                const end_arr = res.data.map((ac) => {
-                    return ac.end
-                })
-        
-                function getSumBudget(total, ac) {
-                    return total + ac.budget
-                }
-        
-                function getSumDisburse(total, ac) {
-                    return total + ac.disburse
-                }
-        
-                const budget_arr = res.data.reduce(getSumBudget, 0)
-                const disburse_arr = res.data.reduce(getSumDisburse, 0)
-        
-                $scope.used_budget = budget_arr
-                $scope.used_disburse = disburse_arr
-                $scope.percent = ( disburse_arr / budget_arr ) * 100
-                $scope.last_month = Math.max(...end_arr)
-
-                return res
-            }
-            $scope.used_budget = 0
-            $scope.used_disburse = 0
-            $scope.percent = 0
-            $scope.last_month = 0
-            return res
-        }).then(() => {
-            $http.get('/' + $routeParams.key + '/staff').then((res) => {
-                if(res.data) {
-                    const data = Object.keys(res.data).map((key) => {
-                        return {
-                            ...res.data[key],
-                            key: key,
-                            selected: true
-                        }
-                    })
-                    res.data = data
-        
-                    $scope.staffs = res.data
-            
-                    function getSumSalary(total, ac) {
-                        return total + ac.salary
-                    }
-            
-                    $scope.all_salary = $scope.staffs.reduce(getSumSalary, 0)
-                    return res
-                }
-                $scope.all_salary = 0
-            }).then(() => {
-                render_chart()
-            })
-        })
 
         $scope.on_change_activity_select_all = () => {
             if($scope.activity_select_all) {
@@ -417,6 +427,8 @@ app.controller('summaryCtrl', [
 
             Highcharts.chart('container', get_options_graph('สัดส่วนค่าใช้จ่ายกิจกรรม', activities))
             Highcharts.chart('container-staff', get_options_graph('สัดส่วนค่าใช้จ่ายบุคลากร', staffs))
+            console.log('==================')
+            console.log(organize)
             Highcharts.chart('container-organize', get_options_graph('สัดส่วนค่าใช้มหาวิทยาลัย', organize))
             Highcharts.chart('container-type', get_options_graph('สัดส่วนค่าใช้จ่ายตามประเภท', all))
             

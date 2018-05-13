@@ -121,20 +121,20 @@
                 <tr>
                     <th scope="row"> <input type="checkbox" ng-model="university_selected" ng-change="sub_organize_change()"> </th>
                     <td>มหาวิทยาลัย</td>
-                    <td>10</td>
-                    <td>{{ u_vate = budget_all * 0.1 }}</td>
+                    <td>{{ u_percent_budget * 100 }}</td>
+                    <td>{{ budget_all * u_percent_budget }}</td>
                 </tr>
                 <tr>
                     <th scope="row"> <input type="checkbox" ng-model="factory_selected" ng-change="sub_organize_change()"> </th>
                     <td>คณะ</td>
-                    <td>2</td>
-                    <td>{{ f_vate = budget_all * 0.02 }}</td>
+                    <td>{{ f_percent_budget * 100 }}</td>
+                    <td>{{ budget_all * f_percent_budget }}</td>
                 </tr>
                 <tr>
                 <th scope="row"><input type="checkbox" ng-model="department_selected" ng-change="sub_organize_change()"></th>
                     <td>ภาค</td>
-                    <td>1</td>
-                    <td>{{ d_vate = budget_all * 0.01 }}</td>
+                    <td>{{ d_percent_budget * 100 }}</td>
+                    <td>{{ budget_all * d_percent_budget }}</td>
                 </tr>
             </tbody>
             <tfoot>
@@ -142,7 +142,7 @@
                     <th scope="row">รวม</th>
                     <td></td>
                     <td>13</td>
-                    <td>{{ u_all = u_vate + f_vate + d_vate }}</td>
+                    <td>{{ u_vate + f_vate + d_vate }}</td>
                 </tr>
             <tfoot>
             </table>
