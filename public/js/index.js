@@ -38,11 +38,62 @@ app.controller('mainCtrl', [
         $scope.open_adding_project = () => {
             $scope.name = ""
             $scope.budget = ""
+            $scope.is_update_project = false
         }
 
         $scope.add_project = () => {
-
+            $http.post('/projects', {
+                name: $scope.name,
+                budget: $scope.budget
+            })
+            .then(function(res) {
+                load_data()
+            })
         }
+
+        $scope.update_project = (key) => {
+            $http.put('/projects/' + $scope.key, {
+                name: $scope.name,
+                budget: $scope.budget
+            })
+            .then(function(res) {
+                load_data()
+            })
+        }
+
+        $scope.del_project = (key) => {
+            $http.delete('/projects/' + key)
+            .then(function(res) {
+                load_data()
+            })
+        }
+
+        $scope.open_update_project_modal = (index) => {
+            $scope.name = $scope.projects[index].name
+            $scope.budget = $scope.projects[index].budget
+            $scope.key = $scope.projects[index].key
+            $scope.is_update_project = true
+        }
+
+        const load_data = () => {
+            $http.get('/projects')
+            .then(function(res) {
+                if(!res.data) {
+                    return            
+                }
+
+                const data = Object.keys(res.data).map((key) => {
+                    return {
+                        ...res.data[key],
+                        key: key
+                    }
+                })
+                res.data = data
+                $scope.projects = res.data
+            })
+        }
+
+        load_data()
 
         $scope.validation = () => {
             return $scope.name && parseInt($scope.budget) >= 0

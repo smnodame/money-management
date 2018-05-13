@@ -25,10 +25,42 @@ const auth = admin.auth()
 const db = admin.database()
 
 
-
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html')
 })
+
+//  ------------- project ---------------
+
+app.get('/projects', (req, res) => {
+  const ref = db.ref("projects")
+  ref.once("value", function(snapshot) {
+    res.json(snapshot.val())
+  }, function (errorObject) {
+    res.status(500).send()
+  });
+})
+
+app.post('/projects', (req, res) => {
+  const projectRef = db.ref("projects")
+  projectRef.push().set(req.body)
+  res.json(res.body)
+})
+
+app.delete('/projects/:id', (req, res) => {
+  const ref = db.ref("projects")
+  const projectRef = ref.child(req.params.id)
+  projectRef.remove()
+  res.json(res.body)
+})
+
+app.put('/projects/:id', (req, res) => {
+  const ref = db.ref("projects")
+  const projectRef = ref.child(req.params.id)
+  projectRef.update(req.body)
+  res.json(res.body)
+})
+
+//  ------------- activities ---------------
 
 app.get('/activities', (req, res) => {
   const ref = db.ref("activities")

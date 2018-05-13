@@ -37,12 +37,12 @@
                 <tbody>
                     <tr ng-repeat="project in projects track by $index" >
                         <th scope="row">{{ $index + 1 }} </th>
-                        <td>{{ activity.name }}</td>
-                        <td>{{ activity.budget }}</td>
+                        <td>{{ project.name }}</td>
+                        <td>{{ project.budget }}</td>
                         <td>
-                            <button type="button" class="btn btn-success" ng-click="navigate(activity.key)">ดู</button>
-                            <button type="button" class="btn btn-info" ng-click="open_update_activity_modal($index)" data-toggle="modal" data-target="#myModal">เเก้ไข</button> 
-                            <button type="button" class="btn btn-warning" ng-click="del_activity(activity.key)">ลบ</button>
+                            <button type="button" class="btn btn-success" ng-click="navigate(project.key)">ดู</button>
+                            <button type="button" class="btn btn-info" ng-click="open_update_project_modal($index)" data-toggle="modal" data-target="#myModal">เเก้ไข</button> 
+                            <button type="button" class="btn btn-warning" ng-click="del_project(project.key)">ลบ</button>
                         </td>
                     </tr>
                     <tr ng-if="projects.length == 0">
@@ -80,7 +80,8 @@
                     </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success" ng-click="add_project()" data-dismiss="modal" ng-disabled="!validation()">เพิ่ม</button>
+                <button type="button" class="btn btn-success" ng-show="is_update_project" ng-click="update_project()" data-dismiss="modal" ng-disabled="!validation()">อัพเดท</button>
+                <button type="button" class="btn btn-success" ng-show="!is_update_project" ng-click="add_project()" data-dismiss="modal" ng-disabled="!validation()">เพิ่ม</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">ปิด</button>
             </div>
         </div>
