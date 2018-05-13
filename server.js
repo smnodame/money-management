@@ -62,18 +62,23 @@ app.put('/projects/:id', (req, res) => {
 
 //  ------------- activities ---------------
 
-app.get('/activities', (req, res) => {
-  const ref = db.ref("activities")
+app.get('/:key/activities', (req, res) => {
+  const ref = db.ref("projects/" + req.params.key + "/activities")
   ref.once("value", function(snapshot) {
     res.json(snapshot.val())
   }, function (errorObject) {
     res.status(500).send()
   });
-  
 })
 
-app.get('/activities/:id', (req, res) => {
-  const ref = db.ref("activities")
+app.post('/:key/activities', (req, res) => {
+  const activityRef = db.ref("projects/" + req.params.key + "/activities")
+  activityRef.push().set(req.body)
+  res.json(res.body)
+})
+
+app.get('/:key/activities/:id', (req, res) => {
+  const ref = db.ref("projects/" + req.params.key + "/activities")
   const activityRef = ref.child(req.params.id)
   activityRef.once("value", function(snapshot) {
     res.json(snapshot.val())
@@ -82,40 +87,24 @@ app.get('/activities/:id', (req, res) => {
   });
 })
 
-app.get('/staff', (req, res) => {
-  const ref = db.ref("staff")
-  ref.once("value", function(snapshot) {
-    res.json(snapshot.val())
-  }, function (errorObject) {
-    res.status(500).send()
-  });
-  
-})
-
-app.delete('/activities/:id', (req, res) => {
-    const ref = db.ref("activities")
-    const activityRef = ref.child(req.params.id)
-    activityRef.remove()
-    res.json(res.body)
-    // console.log(req.params.id)
-})
-
-app.put('/activities/:id', (req, res) => {
-  const ref = db.ref("activities")
+app.put('/:key/activities/:id', (req, res) => {
+  const ref = db.ref("projects/" + req.params.key + "/activities")
   const activityRef = ref.child(req.params.id)
   activityRef.update(req.body)
   res.json(res.body)
 })
 
-app.post('/activities', (req, res) => {
-  const activityRef = db.ref("activities")
-  // const activityRef = ref.child("activities")
-  activityRef.push().set(req.body)
+app.delete('/:key/activities/:id', (req, res) => {
+  const ref = db.ref("projects/" + req.params.key + "/activities")
+  const activityRef = ref.child(req.params.id)
+  activityRef.remove()
   res.json(res.body)
 })
 
-app.post('/activities/:id', (req, res) => {
-  const ref = db.ref("activities/"+ req.params.id)
+// --------------- sub project ---------------
+
+app.post('/:key/activities/:id', (req, res) => {
+  const ref = db.ref("projects/" + req.params.key + "/activities/"+ req.params.id)
   const activityRef = ref.child("activities")
   activityRef.push().set(req.body)
   ref.update({
@@ -124,35 +113,17 @@ app.post('/activities/:id', (req, res) => {
   res.json(res.body)
 })
 
-app.post('/staff', (req, res) => {
-  const staffRef = db.ref("staff")
-  staffRef.push().set(req.body)
-  res.json(res.body)
-})
-
-app.put('/staff/:id', (req, res) => {
-  const ref = db.ref("staff")
-  const staffRef = ref.child(req.params.id)
-  staffRef.update(req.body)
-  res.json(res.body)
-})
-
-app.delete('/staff/:id', (req, res) => {
-  const ref = db.ref("staff")
-  const staffRef = ref.child(req.params.id)
-  staffRef.remove()
-  res.json(res.body)
-})
-
-app.delete('/activities/:id/:key', (req, res) => {
-  const ref = db.ref("activities/"+req.params.id+"/activities")
-  const activityRef = ref.child(req.params.key)
+app.delete('/:key/activities/:id/:sub', (req, res) => {
+  const ref = db.ref("projects/" + req.params.key + "/activities/"+req.params.id+"/activities")
+  const activityRef = ref.child(req.params.sub)
   activityRef.remove()
   res.json(res.body)
 })
 
-app.get('/info', (req, res) => {
-  const ref = db.ref("info")
+//  ------------- staff ---------------
+
+app.get('/:key/staff', (req, res) => {
+  const ref = db.ref("projects/" + req.params.key + "/staff")
   ref.once("value", function(snapshot) {
     res.json(snapshot.val())
   }, function (errorObject) {
@@ -160,9 +131,42 @@ app.get('/info', (req, res) => {
   });
 })
 
-app.put('/info', (req, res) => {
-  const infoRef = db.ref("info")
-  infoRef.update(req.body)
+app.post('/:key/staff', (req, res) => {
+  const staffRef = db.ref("projects/" + req.params.key + "/staff")
+  staffRef.push().set(req.body)
+  res.json(res.body)
+})
+
+app.put('/:key/staff/:id', (req, res) => {
+  const ref = db.ref("projects/" + req.params.key + "/staff")
+  const staffRef = ref.child(req.params.id)
+  staffRef.update(req.body)
+  res.json(res.body)
+})
+
+app.delete('/:key/staff/:id', (req, res) => {
+  const ref = db.ref("projects/" + req.params.key + "/staff")
+  const staffRef = ref.child(req.params.id)
+  staffRef.remove()
+  res.json(res.body)
+})
+
+//  ------------- info ---------------
+
+app.get('/:key/info', (req, res) => {
+  const ref = db.ref("projects/" + req.params.key)
+  ref.once("value", function(snapshot) {
+    res.json({
+      name: snapshot.val()['name']
+    })
+  }, function (errorObject) {
+    res.status(500).send()
+  });
+})
+
+app.put('/:key/info', (req, res) => {
+  const infoRef = db.ref("projects/" + req.params.key + "/name")
+  infoRef.setValue(req.body['name'])
   res.json(res.body)
 })
 

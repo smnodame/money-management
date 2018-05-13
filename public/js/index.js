@@ -32,7 +32,7 @@ app.run(function($rootScope) {
 });
 var round = 0
 app.controller('mainCtrl', [
-    '$scope', '$http', function ($scope, $http) {
+    '$scope', '$http', '$location', function ($scope, $http, $location) {
         $scope.projects = []
 
         $scope.open_adding_project = () => {
@@ -59,6 +59,10 @@ app.controller('mainCtrl', [
             .then(function(res) {
                 load_data()
             })
+        }
+
+        $scope.navigate = (key) => {
+            $location.path(key)
         }
 
         $scope.del_project = (key) => {
@@ -441,9 +445,9 @@ app.controller('sidebarCtrl', [
 ])
 
 app.controller('homeCtrl', [
-    '$scope', '$http',
-    function($scope, $http) {
-        $http.get('/info')
+    '$scope', '$http', '$routeParams',
+    function($scope, $http, $routeParams) {
+        $http.get('/' + $routeParams.key + '/info')
         .then(function(res) {
             if(res.data && res.data.name) {
                 $scope.name = res.data.name || ''            
@@ -453,7 +457,7 @@ app.controller('homeCtrl', [
         $scope.last_month = 10
         $scope.months = Array.from(Array(10).keys())
         
-        $http.get('/activities')
+        $http.get('/' + $routeParams.key + '/activities')
         .then(function(res) {
             if(res.data) {
                 const data = Object.keys(res.data).map((key) => {
