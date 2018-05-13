@@ -112,6 +112,9 @@ app.controller('summaryCtrl', [
         }
         round = 1
         $scope.budget_all = 1000000
+        $scope.u_percent_budget = 0.10
+        $scope.f_percent_budget = 0.02 
+        $scope.d_percent_budget = 0.01  
 
         $http.get('/' + $routeParams.key + '/info')
         .then(function(res) {
@@ -186,9 +189,11 @@ app.controller('summaryCtrl', [
                 }).then(() => {
                     $http.get('/' + $routeParams.key + '/university')
                     .then(function(res) {
-                        $scope.u_percent_budget = res.data.u_percent_budget || 0.10
-                        $scope.f_percent_budget = res.data.f_percent_budget || 0.02 
-                        $scope.d_percent_budget = res.data.d_percent_budget || 0.01     
+                        if(res.data) {
+                            $scope.u_percent_budget = res.data.u_percent_budget || 0.10
+                            $scope.f_percent_budget = res.data.f_percent_budget || 0.02 
+                            $scope.d_percent_budget = res.data.d_percent_budget || 0.01  
+                        }
                         return res
                     }).then(() => {
                         render_chart()                    
