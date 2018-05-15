@@ -35,7 +35,7 @@
                         <td>{{ activity.disburse }}</td>
                         <td>{{ (activity.disburse * 100 ) / activity.budget  }}</td>
                     </tr>
-                
+
                 </tbody>
                 <tfoot>
                     <tr>
@@ -53,7 +53,7 @@
         </div>
     </div>
 </div>
-    
+
 <div class="col-md-12">
     <div class="card">
         <div class="card-header">
@@ -98,7 +98,7 @@
             <div id="container-staff" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto; margin-top: 40px"></div>
 
         </div>
-        
+
     </div>
 </div>
 
@@ -141,7 +141,7 @@
                 <tr>
                     <th scope="row">รวม</th>
                     <td></td>
-                    <td>13</td>
+                    <td>{{ (u_percent_budget + f_percent_budget + d_percent_budget) * 100 }}</td>
                     <td>{{ u_vate + f_vate + d_vate }}</td>
                 </tr>
             <tfoot>
@@ -162,7 +162,3 @@
         </div>
     </div>
 </div>
-    
-    
-    
-    

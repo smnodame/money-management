@@ -1,6 +1,6 @@
  <!-- Header-->
  <header id="header" class="header">
-        
+
     <div class="header-menu">
 
         <div class="col-sm-8">
@@ -11,7 +11,7 @@
                         <span class="input-group-btn">
                             <button class="btn btn-default" type="button" ng-click="update_name()">UPDATE</button>
                         </span>
-                    </div>   
+                    </div>
             </div>
         </div>
         <div class=" page-header float-right">
@@ -23,7 +23,7 @@
 
 <div class="content mt-3">
     <div class="col-md-12" style="margin-bottom: 15px">
-        
+
     </div>
     <div class="col-md-12">
         <div class="form-group">
@@ -68,11 +68,11 @@
                         <td>{{ (activity.disburse * 100 ) / activity.budget  }}</td>
                         <td>
                             <button type="button" class="btn btn-success" ng-click="navigate(activity.key)">ดู</button>
-                            <button type="button" class="btn btn-info" ng-click="open_update_activity_modal($index)" data-toggle="modal" data-target="#myModal">เเก้ไข</button> 
+                            <button type="button" class="btn btn-info" ng-click="open_update_activity_modal($index)" data-toggle="modal" data-target="#myModal">เเก้ไข</button>
                             <button type="button" class="btn btn-warning" ng-click="del_activity(activity.key)">ลบ</button>
                         </td>
                     </tr>
-                
+
                 </tbody>
                 <tfoot>
                     <tr>
@@ -183,7 +183,7 @@
                     <tr>
                         <th scope="row">รวม</th>
                         <td></td>
-                        <td>13</td>
+                        <td>{{ (u_percent_budget + f_percent_budget + d_percent_budget) * 100 }}</td>
                         <td>{{ u_all = u_vate + f_vate + d_vate }}</td>
                     </tr>
                 <tfoot>
@@ -198,7 +198,7 @@
 <!-- Modal -->
 <div class="modal fade" id="myModal" role="dialog">
     <div class="modal-dialog">
-    
+
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
@@ -247,14 +247,14 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">ปิด</button>
             </div>
         </div>
-        
+
     </div>
 </div>
 
 <!-- Modal -->
 <div class="modal fade" id="university_budget_modal" role="dialog">
         <div class="modal-dialog">
-        
+
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
@@ -285,14 +285,14 @@
                     <button type="button" class="btn btn-default" data-dismiss="modal">ปิด</button>
                 </div>
             </div>
-            
+
         </div>
     </div>
 
 <!-- Modal -->
 <div class="modal fade" id="staff" role="dialog">
         <div class="modal-dialog">
-        
+
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
@@ -352,6 +352,6 @@
                     <button type="button" class="btn btn-default" data-dismiss="modal">ปิด</button>
                 </div>
             </div>
-            
+
         </div>
     </div>
