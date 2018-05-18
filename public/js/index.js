@@ -125,6 +125,10 @@ app.controller('summaryCtrl', [
         $scope.f_percent_budget = 0.02 
         $scope.d_percent_budget = 0.01  
 
+        $scope.numberWithCommas = (num) => {
+            return numberWithCommas(num)
+        }
+        
         $http.get('/' + $routeParams.key + '/info')
         .then(function(res) {
             if(res.data && res.data.name) {
