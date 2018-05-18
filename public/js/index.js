@@ -31,6 +31,11 @@ app.run(function($rootScope) {
     });
 });
 var round = 0
+
+const numberWithCommas = (number) => {
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+}
+
 app.controller('mainCtrl', [
     '$scope', '$http', '$location', function ($scope, $http, $location) {
         $scope.projects = []
@@ -49,6 +54,10 @@ app.controller('mainCtrl', [
             .then(function(res) {
                 load_data()
             })
+        }
+
+        $scope.numberWithCommas = (num) => {
+            return numberWithCommas(num)
         }
 
         $scope.update_project = (key) => {

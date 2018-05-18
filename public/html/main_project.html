@@ -38,7 +38,7 @@
                     <tr ng-repeat="project in projects track by $index" >
                         <th scope="row">{{ $index + 1 }} </th>
                         <td>{{ project.name }}</td>
-                        <td>{{ project.budget }}</td>
+                        <td>{{ numberWithCommas(project.budget) }}</td>
                         <td>
                             <button type="button" class="btn btn-success" ng-click="navigate(project.key)">ดู</button>
                             <button type="button" class="btn btn-info" ng-click="open_update_project_modal($index)" data-toggle="modal" data-target="#myModal">เเก้ไข</button> 
