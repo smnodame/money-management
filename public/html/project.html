@@ -63,8 +63,8 @@
                         <th scope="row">{{ $index + 1 }} </th>
                         <td>{{ activity.name }}</td>
                         <td>กิจกรรมเดือน {{ activity.start }} - {{ activity.end }}</td>
-                        <td>{{ activity.budget }}</td>
-                        <td>{{ activity.disburse }}</td>
+                        <td>{{ numberWithCommas(activity.budget) }}</td>
+                        <td>{{ numberWithCommas(activity.disburse) }}</td>
                         <td>{{ (activity.disburse * 100 ) / activity.budget  }}</td>
                         <td>
                             <button type="button" class="btn btn-success" ng-click="navigate(activity.key)">ดู</button>
@@ -79,8 +79,8 @@
                         <th scope="row">รวม</th>
                         <td></td>
                         <td>{{ last_month }}</td>
-                        <td>{{ a_all = used_budget }}</td>
-                        <td>{{ used_disburse }}</td>
+                        <td>{{ numberWithCommas(a_all = used_budget) }}</td>
+                        <td>{{ numberWithCommas(used_disburse) }}</td>
                         <td>{{ percent.toFixed(2) }}</td>
                         <td>
                         </td>
@@ -117,8 +117,8 @@
                         <th scope="row">{{ $index + 1 }}</th>
                         <td>{{ staff.position }}</td>
                         <td>{{ staff.fullname }}</td>
-                        <td>{{ staff.salary  }}</td>
-                        <td>{{  staff.salary * last_month }}</td>
+                        <td>{{ numberWithCommas(staff.salary)  }}</td>
+                        <td>{{  numberWithCommas(staff.salary * last_month) }}</td>
                         <td>{{  ((staff.salary * last_month) * 100 / budget_all ).toFixed(2) }}</td>
                         <td>
                             <button type="button" class="btn btn-info" ng-click="open_updating_staff($index)"  data-toggle="modal" data-target="#staff">เเก้ไข</button>
@@ -131,8 +131,8 @@
                         <th scope="row">รวม</th>
                         <td></td>
                         <td></td>
-                        <td>{{ all_salary }}</td>
-                        <td>{{ s_all = all_salary * last_month }}</td>
+                        <td>{{ numberWithCommas(all_salary) }}</td>
+                        <td>{{ numberWithCommas(s_all = all_salary * last_month) }}</td>
                         <td>{{ ((s_all) * 100 / budget_all ).toFixed(2) }}</td>
                     </tr>
                 <tfoot>
@@ -164,19 +164,19 @@
                         <th scope="row">1</th>
                         <td>มหาวิทยาลัย</td>
                         <td>{{ u_percent_budget * 100 }}</td>
-                        <td>{{ u_vate = budget_all * u_percent_budget }}</td>
+                        <td>{{ numberWithCommas(u_vate = budget_all * u_percent_budget) }}</td>
                     </tr>
                     <tr>
                         <th scope="row">2</th>
                         <td>คณะ</td>
                         <td>{{ f_percent_budget * 100 }}</td>
-                        <td>{{ f_vate = budget_all * f_percent_budget }}</td>
+                        <td>{{ numberWithCommas(f_vate = budget_all * f_percent_budget) }}</td>
                     </tr>
                     <tr>
                     <th scope="row">3</th>
                         <td>ภาค</td>
                         <td>{{ d_percent_budget * 100 }}</td>
-                        <td>{{ d_vate = budget_all * d_percent_budget }}</td>
+                        <td>{{ numberWithCommas(d_vate = budget_all * d_percent_budget) }}</td>
                     </tr>
                 </tbody>
                 <tfoot>
@@ -184,7 +184,7 @@
                         <th scope="row">รวม</th>
                         <td></td>
                         <td>{{ (u_percent_budget + f_percent_budget + d_percent_budget) * 100 }}</td>
-                        <td>{{ u_all = u_vate + f_vate + d_vate }}</td>
+                        <td>{{ numberWithCommas(u_all = u_vate + f_vate + d_vate) }}</td>
                     </tr>
                 <tfoot>
                 </table>

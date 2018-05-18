@@ -542,6 +542,10 @@ app.controller('projectCtrl', ['$scope', '$http', '$rootScope', '$route', '$loca
         }).datepicker('update', new Date())
     })
 
+    $scope.numberWithCommas = (num) => {
+        return numberWithCommas(num)
+    }
+
     $scope.u_percent_budget = 0.10
     $scope.f_percent_budget = 0.02
     $scope.d_percent_budget = 0.01
@@ -833,6 +837,10 @@ app.controller('subProjectCtrl', ['$scope', '$http', '$rootScope', '$routeParams
         }).datepicker('update', new Date())
     })
 
+    $scope.numberWithCommas = (num) => {
+        return numberWithCommas(num)
+    }
+    
     function getSum(total, ac) {
         return total + ac.price
     }
